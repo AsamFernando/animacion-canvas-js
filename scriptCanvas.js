@@ -4,19 +4,6 @@ const body = document.body
 const switchAnimacionBtn = document.getElementById("switchAnimacionBtn")
 const mostrarCuadriculaBtn = document.getElementById("mostrarCuadriculaBtn")
 
-//ctx1.fillRect(distanciaEnX, distanciaEnY, anchoRectangulo, altoRectangulo)
-
-// const adiv = document.getElementById('mydiv');
-// let leftpos = 0;
-
-// function movediv(timestamp){
-//   leftpos += 1;
-//   adiv.style.left = leftpos + 'px';
-//   requestAnimationFrame(movediv);
-// }
-
-// requestAnimationFrame(movediv);
-
 let velocidad = 5
 let posX = 20;
 let posY = 20;
@@ -56,14 +43,11 @@ const draw = () => {
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
     
     ctx1.strokeRect(posX, posY, 15, 25)
-    ctx1.fillText(`X: ${posX} - Y: ${posY}`, 1, 8, 60) //el origen es(x, baseline), baseline se puede cambiar en el contexto con ctx.textBaseline = "top"... etc
+    ctx1.fillText(`X: ${posX} - Y: ${posY}`, 1, 8, 60)
     
     ctx1.fillRect(0, 250, 125, 50)
     
     ctx1.fillRect(175, 225, 125, 37.5)
-    //165 resto 10 a x, resto 10 a y de la posicion del rectangulo relleno
-    //145 20 mas que el ancho, 60 20 mas que el alto para trazar el rectangulo 10 pixeles antes y 10 despues del rectangulo relleno
-    
     ctx1.fillRect(350, 200, 125, 25)
     ctx1.fillRect(525, 175, 125, 12.5)
 
@@ -91,7 +75,6 @@ const draw = () => {
 }
 
 draw()
-// body.addEventListener('load', draw()) //hace lo mismo q ejecutar draw()
 
 const moverDerecha = (e) => {
     if(e.key == 'd') {
@@ -155,15 +138,6 @@ window.addEventListener('keydown', moverAbajo)
 window.addEventListener('keyup', frenarRect)
 switchAnimacionBtn.addEventListener('click', switchLoop)
 mostrarCuadriculaBtn.addEventListener('click', switchCuadricula)
-
-
-
-// window.requestAnimationFrame(draw)
-// const frenarRect = (event) => {
-    // if(event.key == 'd')
-//     window.cancelAnimationFrame(myReq) cancelAnimationFrame me saca del loop de draw()
-// }
-
 
 //proximos cambios
 
