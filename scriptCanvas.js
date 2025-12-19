@@ -1,0 +1,179 @@
+const canvas1 = document.getElementById("canvas1")
+const ctx1 = canvas1.getContext("2d")
+const body = document.body
+const switchAnimacionBtn = document.getElementById("switchAnimacionBtn")
+const mostrarCuadriculaBtn = document.getElementById("mostrarCuadriculaBtn")
+
+//ctx1.fillRect(distanciaEnX, distanciaEnY, anchoRectangulo, altoRectangulo)
+
+// const adiv = document.getElementById('mydiv');
+// let leftpos = 0;
+
+// function movediv(timestamp){
+//   leftpos += 1;
+//   adiv.style.left = leftpos + 'px';
+//   requestAnimationFrame(movediv);
+// }
+
+// requestAnimationFrame(movediv);
+
+let velocidad = 5
+let posX = 20;
+let posY = 20;
+const anchoRect = 15;
+const altoRect = 25;
+let myReq;
+let movingX = null
+let movingY = null
+let showCuadricula = false
+let animacionCorriendo = true
+
+
+const rectLlegoFinalCanvasX = () => posX == canvas1.width - anchoRect;
+const rectLlegoInicioCanvasX = () => posX == 0;
+const rectLlegoFinalCanvasY = () => posY == canvas1.height - altoRect;
+const rectLlegoInicioCanvasY = () => posY == 0;
+
+const mostrarCuadricula = () => {
+    ctx1.beginPath();
+    
+    const cuadY = 12.5
+    const cuadX = 12.5
+    
+    for (let yPos = cuadY; yPos < canvas1.height; yPos += cuadY) {
+            ctx1.moveTo(0, yPos);
+            ctx1.lineTo(canvas1.width, yPos);
+        }
+    for (let xPos = cuadX; xPos < canvas1.width; xPos += cuadX) {
+        ctx1.moveTo(xPos, 0);
+        ctx1.lineTo(xPos, canvas1.height);
+    }
+    ctx1.strokeStyle = "grey";
+    ctx1.stroke();
+}
+
+const draw = () => {
+    ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
+    
+    ctx1.strokeRect(posX, posY, 15, 25)
+    ctx1.fillText(`X: ${posX} - Y: ${posY}`, 1, 8, 60) //el origen es(x, baseline), baseline se puede cambiar en el contexto con ctx.textBaseline = "top"... etc
+    
+    ctx1.fillRect(0, 250, 125, 50)
+    
+    ctx1.fillRect(175, 225, 125, 37.5)
+    //165 resto 10 a x, resto 10 a y de la posicion del rectangulo relleno
+    //145 20 mas que el ancho, 60 20 mas que el alto para trazar el rectangulo 10 pixeles antes y 10 despues del rectangulo relleno
+    
+    ctx1.fillRect(350, 200, 125, 25)
+    ctx1.fillRect(525, 175, 125, 12.5)
+
+    if(showCuadricula) {
+        mostrarCuadricula()
+    }
+
+    if(movingX && movingX != null && !rectLlegoFinalCanvasX()) {
+        posX += velocidad
+    }
+    else if(!movingX && movingX != null && !rectLlegoInicioCanvasX()) {
+        posX -= velocidad
+    }
+    else {}
+
+    if(movingY && movingY != null && !rectLlegoInicioCanvasY()) {
+        posY -= velocidad
+    }
+    else if(!movingY && movingY != null && !rectLlegoFinalCanvasY()) {
+        posY += velocidad
+    }
+    else {}
+
+    myReq = window.requestAnimationFrame(draw)
+}
+
+draw()
+// body.addEventListener('load', draw()) //hace lo mismo q ejecutar draw()
+
+const moverDerecha = (e) => {
+    if(e.key == 'd') {
+        movingX = true
+    }
+} 
+const moverIzquierda = (e) => {
+    if(e.key == 'a') {
+        movingX = false
+    }
+} 
+const moverArriba = (e) => {
+    if(e.key == 'w') {
+        movingY = true
+    }
+} 
+const moverAbajo = (e) => {
+    if(e.key == 's') {
+        movingY = false
+    }
+} 
+const frenarRect = (e) => {
+    movingX = null
+    movingY = null
+}
+
+const terminarLoop = (e) => {
+    window.cancelAnimationFrame(myReq)
+    switchAnimacionBtn.innerText = 'comenzar animacion'
+    animacionCorriendo = false
+}
+const iniciarLoop = (e) => {
+    draw()
+    switchAnimacionBtn.innerText = 'terminar animacion'
+    animacionCorriendo = true
+}
+
+const switchLoop = (e) => {
+    if(animacionCorriendo) {
+        terminarLoop()
+    }
+    else {
+        iniciarLoop()
+    }
+}
+
+const switchCuadricula = (e) => {
+    if(showCuadricula) {
+        mostrarCuadriculaBtn.innerText = 'mostrar cuadricula'
+    }
+    else {
+        mostrarCuadriculaBtn.innerText = 'ocultar cuadricula'
+    }
+    showCuadricula = !showCuadricula
+}
+
+window.addEventListener('keydown', moverDerecha)
+window.addEventListener('keydown', moverIzquierda)
+window.addEventListener('keydown', moverArriba)
+window.addEventListener('keydown', moverAbajo)
+window.addEventListener('keyup', frenarRect)
+switchAnimacionBtn.addEventListener('click', switchLoop)
+mostrarCuadriculaBtn.addEventListener('click', switchCuadricula)
+
+
+
+// window.requestAnimationFrame(draw)
+// const frenarRect = (event) => {
+    // if(event.key == 'd')
+//     window.cancelAnimationFrame(myReq) cancelAnimationFrame me saca del loop de draw()
+// }
+
+
+//proximos cambios
+
+//refactorizar las funciones y eventos y usar objetos donde se necesite
+//sacar funciones fuera de draw o crear nuevas
+//evitar mucho uso de if else
+//hacer que la velocidad sea constante sin depender de refresh rate del monitor, con timestamp
+//incorporar aceleracion al rectangulo
+//incorporar gravedad y su aceleracion
+//incorporar colisiones con otros rectangulo u objetos
+//que el rectangulo pueda pegar un salto presionando la w o barra espaciadora
+//que al pegar un salto se pueda desplazar en el aire con w y s
+//incorporar desplazamiento en diagonal

@@ -1,0 +1,23 @@
+canvas {
+    border: 1px solid black;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+}
+
+div {
+    border: 1px solid black;
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;     /* Centers vertically */
+    height: 50vh;           /* Makes the container the full height of the viewport */
+    width: 100vw;
+}
+#divBtn {
+    border: 1px solid black;
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;     /* Centers vertically */
+}
