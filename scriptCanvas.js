@@ -37,9 +37,9 @@ const rectPlayer = {
     id:1,
     posX:20,
     posY:20,
-    ancho:15,
-    alto:25,
-    velocidad:10,
+    ancho:20,
+    alto:30,
+    velocidad:5,
     finX() {return this.posX == canvas1.width - this.ancho},
     finY() {return this.posY == canvas1.height - this.alto},
     inicioX() {return this.posX == 0},
@@ -50,9 +50,11 @@ const rectPlayer = {
     d() {if(!this.finX()) this.posX += this.velocidad},
 }
 
+let moving = false; //flag para arrancar la animacion de rectPlayer o frenarla
+let keyPressed = "" //variable para poder guardar el caracter de la key presionada en el evento y pasarla a rectPlayer con [] y usar la funcion de movimiento
 let myReq;
 let showCuadricula = false
-let animacionCorriendo = true
+let animacionCorriendo = true //flag para arrancar o terminar el loop draw
 
 const dibujarRectangulo = ({posX, posY, ancho, alto}) => {
     ctx1.fillRect(posX, posY, ancho, alto)
@@ -78,6 +80,10 @@ const draw = () => {
 
     if(showCuadricula) {
         mostrarCuadricula()
+    }
+
+    if(moving) {
+        rectPlayer[keyPressed]()
     }
 
     myReq = window.requestAnimationFrame(draw)
@@ -118,11 +124,16 @@ const switchCuadricula = (e) => {
 const mover = (e) => {
     const keys = ['w', 'a', 's', 'd']
     if(keys.includes(e.key)) {
-        rectPlayer[e.key]()
+        keyPressed = e.key
+        moving = true
     }
 }
+const frenar = (e) => {
+    moving = false
+}
 
-window.addEventListener('keydown', (e) => mover(e))
+window.addEventListener('keydown', mover)
+window.addEventListener('keyup', frenar)
 switchAnimacionBtn.addEventListener('click', switchLoop)
 mostrarCuadriculaBtn.addEventListener('click', switchCuadricula)
 
