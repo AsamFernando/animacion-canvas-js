@@ -9,10 +9,10 @@ const mostrarCuadriculaBtn = document.getElementById("mostrarCuadriculaBtn")
 //equivalente en el canvas
 
 const rects = [
-    {id:1, posX:0, posY:250, sizeX:125, sizeY:50},
-    {id:2, posX:175, posY:225, sizeX:125, sizeY:37.5},
-    {id:3, posX:350, posY:200, sizeX:125, sizeY:25},
-    {id:4, posX:525, posY:175, sizeX:125, sizeY:12.5}
+    {id:1, posX:0, posY:250, ancho:125, alto:50},
+    {id:2, posX:175, posY:225, ancho:125, alto:37.5},
+    {id:3, posX:350, posY:200, ancho:125, alto:25},
+    {id:4, posX:525, posY:175, ancho:125, alto:12.5}
 ]
 
 const rectPlayer = {
