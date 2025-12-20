@@ -4,22 +4,36 @@ const body = document.body
 const switchAnimacionBtn = document.getElementById("switchAnimacionBtn")
 const mostrarCuadriculaBtn = document.getElementById("mostrarCuadriculaBtn")
 
+//hacer una clase rectagulo o forma que reciba la cantidad de rects o huecos y cree
+//calculando los valores de ancho alto y tamaño en base a las cantidades y los ubique de manera
+//equivalente en el canvas
+
+const rects = [
+    {id:1, posX:0, posY:250, sizeX:125, sizeY:50},
+    {id:2, posX:175, posY:225, sizeX:125, sizeY:37.5},
+    {id:3, posX:350, posY:200, sizeX:125, sizeY:25},
+    {id:4, posX:525, posY:175, sizeX:125, sizeY:12.5}
+]
+
+const rectPlayer = {
+    id:1,
+    posX:20,
+    posY:20,
+    ancho:15,
+    alto:25
+}
+
 let velocidad = 5
-let posX = 20;
-let posY = 20;
-const anchoRect = 15;
-const altoRect = 25;
 let myReq;
 let movingX = null
 let movingY = null
 let showCuadricula = false
 let animacionCorriendo = true
 
-
-const rectLlegoFinalCanvasX = () => posX == canvas1.width - anchoRect;
-const rectLlegoInicioCanvasX = () => posX == 0;
-const rectLlegoFinalCanvasY = () => posY == canvas1.height - altoRect;
-const rectLlegoInicioCanvasY = () => posY == 0;
+const rectLlegoFinalCanvasX = () => rectPlayer.posX == canvas1.width - rectPlayer.ancho;
+const rectLlegoInicioCanvasX = () => rectPlayer.posX == 0;
+const rectLlegoFinalCanvasY = () => rectPlayer.posY == canvas1.height - rectPlayer.alto;
+const rectLlegoInicioCanvasY = () => rectPlayer.posY == 0;
 
 const mostrarCuadricula = () => {
     ctx1.beginPath();
@@ -39,35 +53,41 @@ const mostrarCuadricula = () => {
     ctx1.stroke();
 }
 
+const dibujarRectangulo = ({posX, posY, ancho, alto}) => {
+    ctx1.fillRect(posX, posY, ancho, alto)
+}
+
+const dibujarRectangulos = () => {
+      for(let rect of rects) {
+        dibujarRectangulo(rect)
+    }
+}
+
 const draw = () => {
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
+    ctx1.fillText(`X: ${rectPlayer.posX} - Y: ${rectPlayer.posY}`, 1, 8, 60)
     
-    ctx1.strokeRect(posX, posY, 15, 25)
-    ctx1.fillText(`X: ${posX} - Y: ${posY}`, 1, 8, 60)
+    dibujarRectangulo(rectPlayer)
     
-    ctx1.fillRect(0, 250, 125, 50)
-    
-    ctx1.fillRect(175, 225, 125, 37.5)
-    ctx1.fillRect(350, 200, 125, 25)
-    ctx1.fillRect(525, 175, 125, 12.5)
+    dibujarRectangulos()
 
     if(showCuadricula) {
         mostrarCuadricula()
     }
 
     if(movingX && movingX != null && !rectLlegoFinalCanvasX()) {
-        posX += velocidad
+        rectPlayer.posX += velocidad
     }
     else if(!movingX && movingX != null && !rectLlegoInicioCanvasX()) {
-        posX -= velocidad
+        rectPlayer.posX -= velocidad
     }
     else {}
 
     if(movingY && movingY != null && !rectLlegoInicioCanvasY()) {
-        posY -= velocidad
+        rectPlayer.posY -= velocidad
     }
     else if(!movingY && movingY != null && !rectLlegoFinalCanvasY()) {
-        posY += velocidad
+        rectPlayer.posY += velocidad
     }
     else {}
 
