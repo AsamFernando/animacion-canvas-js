@@ -45,25 +45,31 @@ const rects = [
 //lo mismo ocurre si pongo la velocidad en 3 y me paro el x = 20 e y = 20 voy a tener numeros negativos
 //al restar y me paso del inicio q es 0 0
 
+const minPos = (inicio, posicion, velocidad) =>  {
+    return Math.max(inicio, posicion - velocidad)
+}
+const maxPos = (final, posicion, velocidad) =>  {
+    return Math.min(final, posicion + velocidad)
+}
+
 const rectPlayer = {
     id:5,
     posX:20,
     posY:20,
     ancho:15,
     alto:25,
-    posXd:this.posX + this.ancho,
-    posYd:this.posY + this.alto,
-    velocidad:12,
-    finX() {return this.posXd == canvas1.width},
-    finY() {return this.posYd == canvas1.height},
+    posXf:this.posX + this.ancho,
+    posYf:this.posY + this.alto,
+    velocidad:3,
+    finX() {return this.posXf == canvas1.width},
+    finY() {return this.posYf == canvas1.height},
     inicioX() {return this.posX == 0},
     inicioY() {return this.posY == 0},
-
-    //refactorizar el control con Math.min y max para poder usar cualquier velocidad sin pasarme del canvas
-    w() {if(!this.inicioY()) this.posY = Math.max(0, this.posY -  this.velocidad)},
-    s() {if(!this.finY()) this.posY = Math.min(canvas1.height - this.alto, this.posY + this.velocidad)},
-    a() {if(!this.inicioX()) this.posX = Math.max(0, this.posX -  this.velocidad)},
-    d() {if(!this.finX()) this.posX = Math.min(canvas1.width - this.ancho, this.posX + this.velocidad)},
+    w() {if(!this.inicioY()) this.posY = minPos(0, this.posY, this.velocidad)},
+    s() {if(!this.finY()) this.posY = maxPos(canvas1.height - this.alto, this.posY, this.velocidad)},
+    a() {if(!this.inicioX()) this.posX = minPos(0, this.posX, this.velocidad)},
+    d() {if(!this.finX()) this.posX = maxPos(canvas1.width - this.ancho, this.posX, this.velocidad)},
+    //refactorizado con dos funciones q usan Math.min y max para poder usar cualquier velocidad sin pasarme del canvas
 }
 
 let moving = false; //flag para arrancar la animacion de rectPlayer o frenarla
