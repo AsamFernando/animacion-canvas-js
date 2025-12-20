@@ -32,22 +32,38 @@ const rects = [
     {id:3, posX:350, posY:200, ancho:125, alto:25},
     {id:4, posX:525, posY:175, ancho:125, alto:12.5}
 ]
+//tener en cuenta la velocidad, el ancho y alto del rectangulo ya que la suma de ambos podria no dar
+//un valor igual a la resta entre el ancho o el alto del rectangulo y el canvas por ej:
+//rectangulo
+//velocidad = 10 ancho = 15 y alto = 25 
+//canvas
+//ancho = 600 alto = 300
+//la suma posX del rectangulo mas velocidad: 580 + 10 = 590 se pasa de la resta entre el ancho del
+//canvas y el ancho del rectangulo: 600 - 15 = 585 por lo que las funciones de fin en x e y
+//nunca van a dar false ya que posX nunca toma el valor 585
+//por lo tanto el rectangulo se sale del canvas hacia abajo y la derecha
+//lo mismo ocurre si pongo la velocidad en 3 y me paro el x = 20 e y = 20 voy a tener numeros negativos
+//al restar y me paso del inicio q es 0 0
 
 const rectPlayer = {
-    id:1,
+    id:5,
     posX:20,
     posY:20,
-    ancho:20,
-    alto:30,
-    velocidad:5,
-    finX() {return this.posX == canvas1.width - this.ancho},
-    finY() {return this.posY == canvas1.height - this.alto},
+    ancho:15,
+    alto:25,
+    posXd:this.posX + this.ancho,
+    posYd:this.posY + this.alto,
+    velocidad:12,
+    finX() {return this.posXd == canvas1.width},
+    finY() {return this.posYd == canvas1.height},
     inicioX() {return this.posX == 0},
     inicioY() {return this.posY == 0},
-    w() {if(!this.inicioY()) this.posY -= this.velocidad},
-    s() {if(!this.finY()) this.posY += this.velocidad},
-    a() {if(!this.inicioX()) this.posX -= this.velocidad},
-    d() {if(!this.finX()) this.posX += this.velocidad},
+
+    //refactorizar el control con Math.min y max para poder usar cualquier velocidad sin pasarme del canvas
+    w() {if(!this.inicioY()) this.posY = Math.max(0, this.posY -  this.velocidad)},
+    s() {if(!this.finY()) this.posY = Math.min(canvas1.height - this.alto, this.posY + this.velocidad)},
+    a() {if(!this.inicioX()) this.posX = Math.max(0, this.posX -  this.velocidad)},
+    d() {if(!this.finX()) this.posX = Math.min(canvas1.width - this.ancho, this.posX + this.velocidad)},
 }
 
 let moving = false; //flag para arrancar la animacion de rectPlayer o frenarla
@@ -67,8 +83,7 @@ const dibujarRectangulos = () => {
 }
 
 const draw = () => {
-    let contadorFrames = 1
-    contadorFrames += 1
+    let contadorFrames = "cantidad de frames en devtools"
     console.log(contadorFrames)
 
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
