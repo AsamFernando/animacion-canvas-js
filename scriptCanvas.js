@@ -20,7 +20,11 @@ const rectPlayer = {
     posX:20,
     posY:20,
     ancho:15,
-    alto:25
+    alto:25,
+    finX() {return this.posX == canvas1.width - this.ancho},
+    finY() {return this.posY == canvas1.height - this.alto},
+    inicioX() {return this.posX == 0},
+    inicioY() {return this.posY == 0}
 }
 
 let velocidad = 5
@@ -29,11 +33,6 @@ let movingX = null
 let movingY = null
 let showCuadricula = false
 let animacionCorriendo = true
-
-const rectLlegoFinalCanvasX = () => rectPlayer.posX == canvas1.width - rectPlayer.ancho;
-const rectLlegoInicioCanvasX = () => rectPlayer.posX == 0;
-const rectLlegoFinalCanvasY = () => rectPlayer.posY == canvas1.height - rectPlayer.alto;
-const rectLlegoInicioCanvasY = () => rectPlayer.posY == 0;
 
 const mostrarCuadricula = () => {
     ctx1.beginPath();
@@ -75,18 +74,18 @@ const draw = () => {
         mostrarCuadricula()
     }
 
-    if(movingX && movingX != null && !rectLlegoFinalCanvasX()) {
+    if(movingX && movingX != null && !rectPlayer.finX()) {
         rectPlayer.posX += velocidad
     }
-    else if(!movingX && movingX != null && !rectLlegoInicioCanvasX()) {
+    else if(!movingX && movingX != null && !rectPlayer.inicioX()) {
         rectPlayer.posX -= velocidad
     }
     else {}
 
-    if(movingY && movingY != null && !rectLlegoInicioCanvasY()) {
+    if(movingY && movingY != null && !rectPlayer.inicioY()) {
         rectPlayer.posY -= velocidad
     }
-    else if(!movingY && movingY != null && !rectLlegoFinalCanvasY()) {
+    else if(!movingY && movingY != null && !rectPlayer.finY()) {
         rectPlayer.posY += velocidad
     }
     else {}
