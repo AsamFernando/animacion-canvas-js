@@ -4,6 +4,24 @@ const body = document.body
 const switchAnimacionBtn = document.getElementById("switchAnimacionBtn")
 const mostrarCuadriculaBtn = document.getElementById("mostrarCuadriculaBtn")
 
+const mostrarCuadricula = () => {
+    ctx1.beginPath();
+    
+    const cuadY = 12.5
+    const cuadX = 12.5
+    
+    for (let yPos = cuadY; yPos < canvas1.height; yPos += cuadY) {
+        ctx1.moveTo(0, yPos);
+        ctx1.lineTo(canvas1.width, yPos);
+    }
+    for (let xPos = cuadX; xPos < canvas1.width; xPos += cuadX) {
+        ctx1.moveTo(xPos, 0);
+        ctx1.lineTo(xPos, canvas1.height);
+    }
+    ctx1.strokeStyle = "grey";
+    ctx1.stroke();
+}
+
 //hacer una clase rectagulo o forma que reciba la cantidad de rects o huecos y cree
 //calculando los valores de ancho alto y tamaño en base a las cantidades y los ubique de manera
 //equivalente en el canvas
@@ -21,36 +39,20 @@ const rectPlayer = {
     posY:20,
     ancho:15,
     alto:25,
+    velocidad:10,
     finX() {return this.posX == canvas1.width - this.ancho},
     finY() {return this.posY == canvas1.height - this.alto},
     inicioX() {return this.posX == 0},
-    inicioY() {return this.posY == 0}
+    inicioY() {return this.posY == 0},
+    w() {if(!this.inicioY()) this.posY -= this.velocidad},
+    s() {if(!this.finY()) this.posY += this.velocidad},
+    a() {if(!this.inicioX()) this.posX -= this.velocidad},
+    d() {if(!this.finX()) this.posX += this.velocidad},
 }
 
-let velocidad = 5
 let myReq;
-let movingX = null
-let movingY = null
 let showCuadricula = false
 let animacionCorriendo = true
-
-const mostrarCuadricula = () => {
-    ctx1.beginPath();
-    
-    const cuadY = 12.5
-    const cuadX = 12.5
-    
-    for (let yPos = cuadY; yPos < canvas1.height; yPos += cuadY) {
-            ctx1.moveTo(0, yPos);
-            ctx1.lineTo(canvas1.width, yPos);
-        }
-    for (let xPos = cuadX; xPos < canvas1.width; xPos += cuadX) {
-        ctx1.moveTo(xPos, 0);
-        ctx1.lineTo(xPos, canvas1.height);
-    }
-    ctx1.strokeStyle = "grey";
-    ctx1.stroke();
-}
 
 const dibujarRectangulo = ({posX, posY, ancho, alto}) => {
     ctx1.fillRect(posX, posY, ancho, alto)
@@ -63,6 +65,10 @@ const dibujarRectangulos = () => {
 }
 
 const draw = () => {
+    let contadorFrames = 1
+    contadorFrames += 1
+    console.log(contadorFrames)
+
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
     ctx1.fillText(`X: ${rectPlayer.posX} - Y: ${rectPlayer.posY}`, 1, 8, 60)
     
@@ -74,51 +80,10 @@ const draw = () => {
         mostrarCuadricula()
     }
 
-    if(movingX && movingX != null && !rectPlayer.finX()) {
-        rectPlayer.posX += velocidad
-    }
-    else if(!movingX && movingX != null && !rectPlayer.inicioX()) {
-        rectPlayer.posX -= velocidad
-    }
-    else {}
-
-    if(movingY && movingY != null && !rectPlayer.inicioY()) {
-        rectPlayer.posY -= velocidad
-    }
-    else if(!movingY && movingY != null && !rectPlayer.finY()) {
-        rectPlayer.posY += velocidad
-    }
-    else {}
-
     myReq = window.requestAnimationFrame(draw)
 }
 
 draw()
-
-const moverDerecha = (e) => {
-    if(e.key == 'd') {
-        movingX = true
-    }
-} 
-const moverIzquierda = (e) => {
-    if(e.key == 'a') {
-        movingX = false
-    }
-} 
-const moverArriba = (e) => {
-    if(e.key == 'w') {
-        movingY = true
-    }
-} 
-const moverAbajo = (e) => {
-    if(e.key == 's') {
-        movingY = false
-    }
-} 
-const frenarRect = (e) => {
-    movingX = null
-    movingY = null
-}
 
 const terminarLoop = (e) => {
     window.cancelAnimationFrame(myReq)
@@ -150,11 +115,14 @@ const switchCuadricula = (e) => {
     showCuadricula = !showCuadricula
 }
 
-window.addEventListener('keydown', moverDerecha)
-window.addEventListener('keydown', moverIzquierda)
-window.addEventListener('keydown', moverArriba)
-window.addEventListener('keydown', moverAbajo)
-window.addEventListener('keyup', frenarRect)
+const mover = (e) => {
+    const keys = ['w', 'a', 's', 'd']
+    if(keys.includes(e.key)) {
+        rectPlayer[e.key]()
+    }
+}
+
+window.addEventListener('keydown', (e) => mover(e))
 switchAnimacionBtn.addEventListener('click', switchLoop)
 mostrarCuadriculaBtn.addEventListener('click', switchCuadricula)
 
