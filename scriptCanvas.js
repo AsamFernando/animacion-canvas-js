@@ -62,8 +62,8 @@ const maxPos = (final, posicion, velocidad) =>  {
 
 const rectPlayer = {
     id:5,
-    posX:20,
-    posY:20,
+    posX:160,
+    posY:200,
     ancho:15,
     alto:25,
     velocidad:3,
@@ -102,9 +102,20 @@ const dibujarRectangulos = () => {
 }
 
 const detectarColision = (rect1, rect2) => {
+    let topRect1 = rect1.posY
+    let bottomRect1 = rect1.posYf()
+    let leftRect1 = rect1.posX
+    let rightRect1 = rect1.posXf()
+    let topRect2 = rect2.posY
+    let bottomRect2 = rect2.posYf()
+    let leftRect2 = rect2.posX
+    let rightRect2 = rect2.posXf()
+
     return (
-        // rect1.posXf() >= rect2.posX && rect1.posYf() >= rect2.posY ||
-        rect1.posX <= (rect2.posX + rect2.ancho) && rect1.posY <= (rect2.posY + rect2.largo)
+        bottomRect1 >= topRect2 &&
+        topRect1 <= bottomRect2 &&
+        rightRect1 >= leftRect2 &&
+        leftRect1 <= rightRect2
     ) 
 
 }
@@ -196,3 +207,4 @@ mostrarCuadriculaBtn.addEventListener('click', switchCuadricula)
 //que el rectangulo pueda pegar un salto presionando la w o barra espaciadora
 //que al pegar un salto se pueda desplazar en el aire con w y s
 //incorporar desplazamiento en diagonal
+//agregar inputs para dar una posicion inicial
