@@ -28,7 +28,15 @@ const mostrarCuadricula = () => {
 
 const rects = [
     {id:1, posX:0, posY:250, ancho:125, alto:50},
-    {id:2, posX:175, posY:225, ancho:125, alto:37.5},
+    {
+        id:2,
+        posX:175,
+        posY:225,
+        ancho:125,
+        alto:37.5,
+        posXf() {return this.posX + this.ancho},
+        posYf() {return this.posY + this.alto},
+    },
     {id:3, posX:350, posY:200, ancho:125, alto:25},
     {id:4, posX:525, posY:175, ancho:125, alto:12.5}
 ]
@@ -58,11 +66,16 @@ const rectPlayer = {
     posY:20,
     ancho:15,
     alto:25,
-    posXf:this.posX + this.ancho,
-    posYf:this.posY + this.alto,
     velocidad:3,
-    finX() {return this.posXf == canvas1.width},
-    finY() {return this.posYf == canvas1.height},
+    // posXf:this.posX + this.ancho,//no funciona el this.posX ni el this.posY ya que al calcular la suma todavia no esta creado el objeto literal rectPlayer con sus propiedades y el this toma window en vez de posX o posY e intenta hacer window.posX o posY
+    // posYf:this.posY + this.alto,//no funciona el this.posX ni el this.posY ya que al calcular la suma todavia no esta creado el objeto literal rectPlayer con sus propiedades y el this toma window en vez de posX o posY e intenta hacer window.posX o posY
+    //se tiene q implementar como un getter, devolviendo la suma en una funcion
+    //si uso get posXf () {return this.posX + this.ancho} luego puedo llamarla con this.posXf sin parentesis
+    //lo ideal es usar get ya que esto es un valor calculado q deriva de las propiedades y no una accion, efecto o cambio de estado q se hacen con metodos directamente 
+    posXf() {return this.posX + this.ancho},
+    posYf() {return this.posY + this.alto},
+    finX() {return this.posXf() == canvas1.width},
+    finY() {return this.posYf() == canvas1.height},
     inicioX() {return this.posX == 0},
     inicioY() {return this.posY == 0},
     w() {if(!this.inicioY()) this.posY = minPos(0, this.posY, this.velocidad)},
@@ -88,12 +101,23 @@ const dibujarRectangulos = () => {
     }
 }
 
+const detectarColision = (rect1, rect2) => {
+    return (
+        // rect1.posXf() >= rect2.posX && rect1.posYf() >= rect2.posY ||
+        rect1.posX <= (rect2.posX + rect2.ancho) && rect1.posY <= (rect2.posY + rect2.largo)
+    ) 
+
+}
+
 const draw = () => {
-    let contadorFrames = "cantidad de frames en devtools"
-    console.log(contadorFrames)
+    // let contadorFrames = "cantidad de frames en devtools"
+    // console.log(contadorFrames)
 
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
     ctx1.fillText(`X: ${rectPlayer.posX} - Y: ${rectPlayer.posY}`, 1, 8, 60)
+    ctx1.fillText(`Xf: ${rectPlayer.posXf()} - Yf: ${rectPlayer.posYf()}`, 1, 18, 60)
+    ctx1.fillText(`rect2X: ${rects[1].posX} - rect2Y: ${rects[1].posY}`, 70, 8, 120)
+    ctx1.fillText(`rect2Xf: ${rects[1].posXf()} - rect2Yf: ${rects[1].posYf()}`, 70, 18, 120)
     
     dibujarRectangulo(rectPlayer)
     
@@ -106,6 +130,8 @@ const draw = () => {
     if(moving) {
         rectPlayer[keyPressed]()
     }
+
+    console.log(detectarColision(rectPlayer, rects[1]))
 
     myReq = window.requestAnimationFrame(draw)
 }
