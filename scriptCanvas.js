@@ -3,10 +3,10 @@ const ctx1 = canvas1.getContext("2d")
 const body = document.body
 const switchAnimacionBtn = document.getElementById("switchAnimacionBtn")
 const mostrarCuadriculaBtn = document.getElementById("mostrarCuadriculaBtn")
-const inicioXString = document.getElementById("inicioX")
-const inicioYString = document.getElementById("inicioY")
-const inicioX = parseFloat(inicioXString.value)
-const inicioY = parseFloat(inicioYString.value)
+const inicioXInput = document.getElementById("inicioX")
+const inicioYInput = document.getElementById("inicioY")
+const inicioX = parseFloat(inicioXInput.value)
+const inicioY = parseFloat(inicioYInput.value)
 
 const mostrarCuadricula = () => {
     ctx1.beginPath();
@@ -93,7 +93,7 @@ let moving = false; //flag para arrancar la animacion de rectPlayer o frenarla
 let keyPressed = "" //variable para poder guardar el caracter de la key presionada en el evento y pasarla a rectPlayer con [] y usar la funcion de movimiento
 let myReq;
 let showCuadricula = false
-let animacionCorriendo = false //flag para arrancar o terminar el loop draw
+let animacionCorriendo = false //flag para arrancar o terminar el loop draw inicia el false y cuando se cambia con el boton ejecuta draw() en switchLoop
 
 const dibujarRectangulo = ({posX, posY, ancho, alto}) => {
     ctx1.fillRect(posX, posY, ancho, alto)
@@ -105,6 +105,9 @@ const dibujarRectangulos = () => {
     }
 }
 
+//funcion para detectar la colision de recPlayer con el 2do rectangulo de rects
+//se chequea que la posicion de los borde que chocarian sean igules menores o
+//mayores segun corresponda
 const detectarColision = (rect1, rect2) => {
     let topRect1 = rect1.posY
     let bottomRect1 = rect1.posYf()
@@ -148,10 +151,15 @@ const draw = () => {
 
     console.log(detectarColision(rectPlayer, rects[1]))
 
-    myReq = window.requestAnimationFrame(draw)
+    //permite evitar el loop de draw para poder correrlo por fuera de requestAnimationFrame
+    //y poder dibujar el 1 frame o dibujar el frame con la posicion cambiada de rectPlayer
+    //cuando no esta corriendo la animacion
+    if(animacionCorriendo) {
+        myReq = window.requestAnimationFrame(draw)
+    }
 }
 
-// draw()
+draw() //dibuja el primer frame con la posicion por defecto en el value de los input
 
 const terminarLoop = (e) => {
     window.cancelAnimationFrame(myReq)
@@ -159,9 +167,9 @@ const terminarLoop = (e) => {
     animacionCorriendo = false
 }
 const iniciarLoop = (e) => {
-    draw()
-    switchAnimacionBtn.innerText = 'terminar animacion'
     animacionCorriendo = true
+    switchAnimacionBtn.innerText = 'terminar animacion'
+    draw()
 }
 
 const switchLoop = (e) => {
@@ -194,10 +202,27 @@ const frenar = (e) => {
     moving = false
 }
 
+//funciones para el evento de cambiar de posicion a rectPlayer
+const changePosX = (e) => {
+    rectPlayer.posX = parseFloat(e.target.value)
+    if(!animacionCorriendo) draw()
+}
+const changePosY = (e) => {
+    rectPlayer.posY = parseFloat(e.target.value)
+    if(!animacionCorriendo) draw()
+}
+
 window.addEventListener('keydown', mover)
 window.addEventListener('keyup', frenar)
 switchAnimacionBtn.addEventListener('click', switchLoop)
 mostrarCuadriculaBtn.addEventListener('click', switchCuadricula)
+
+//permite cambiar la posicion inicial de rectPlayer en x e y con los inputs y dibujarla con
+//draw() sin comenzar el loop, este solo inicia si le doy al boton comenzar animacion
+inicioXInput.addEventListener('input', changePosX)
+inicioYInput.addEventListener('input', changePosY)
+
+
 
 //proximos cambios
 
