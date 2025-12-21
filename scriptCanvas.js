@@ -3,6 +3,10 @@ const ctx1 = canvas1.getContext("2d")
 const body = document.body
 const switchAnimacionBtn = document.getElementById("switchAnimacionBtn")
 const mostrarCuadriculaBtn = document.getElementById("mostrarCuadriculaBtn")
+const inicioXString = document.getElementById("inicioX")
+const inicioYString = document.getElementById("inicioY")
+const inicioX = parseFloat(inicioXString.value)
+const inicioY = parseFloat(inicioYString.value)
 
 const mostrarCuadricula = () => {
     ctx1.beginPath();
@@ -62,8 +66,8 @@ const maxPos = (final, posicion, velocidad) =>  {
 
 const rectPlayer = {
     id:5,
-    posX:160,
-    posY:200,
+    posX:inicioX,
+    posY:inicioY,
     ancho:15,
     alto:25,
     velocidad:3,
@@ -89,7 +93,7 @@ let moving = false; //flag para arrancar la animacion de rectPlayer o frenarla
 let keyPressed = "" //variable para poder guardar el caracter de la key presionada en el evento y pasarla a rectPlayer con [] y usar la funcion de movimiento
 let myReq;
 let showCuadricula = false
-let animacionCorriendo = true //flag para arrancar o terminar el loop draw
+let animacionCorriendo = false //flag para arrancar o terminar el loop draw
 
 const dibujarRectangulo = ({posX, posY, ancho, alto}) => {
     ctx1.fillRect(posX, posY, ancho, alto)
@@ -147,7 +151,7 @@ const draw = () => {
     myReq = window.requestAnimationFrame(draw)
 }
 
-draw()
+// draw()
 
 const terminarLoop = (e) => {
     window.cancelAnimationFrame(myReq)

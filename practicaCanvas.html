@@ -7,19 +7,23 @@
     <link rel="stylesheet" href="practicaCanvas.css">
 </head>
 <body>
-    <div>
+    <div class="divCanvas">
         <canvas id="canvas1" class="canvasRect1" width="650" height="300"></canvas>
     </div>
-    <div>
-        <input type="text">
-        <br>
-        <input type="text">
-    </div>
-    <div class="divBtn">
-        <button id="switchAnimacionBtn">terminar animacion</button>
-        <br>
-        <button id="mostrarCuadriculaBtn">mostrar cuadricula</button>
-    </div>
+        <div class="divInputs">
+            <label for="inicioX">inicio x: </label>
+            <input id="inicioX" type="number" size="20" value="20">
+        </div>
+        <div class="divInputs">
+            <label for="inicioY">inicio y: </label>
+            <input id="inicioY" type="number" size="20" value="20">
+        </div>
+        <div class="divBtn">
+            <button id="switchAnimacionBtn">comenzar animacion</button>
+        </div>
+        <div class="divBtn">
+            <button id="mostrarCuadriculaBtn">mostrar cuadricula</button>
+        </div>
     <script src="scriptCanvas.js"></script>
 </body>
 </html>

@@ -3,11 +3,17 @@ canvas {
 }
 
 body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;     /* Centers vertically */
+    display: flex;
+    flex-direction: column;
     height: 100%;
     margin: 0;
 }
 
-div {
+.divCanvas {
     border: 1px solid black;
     display: flex;
     justify-content: center; /* Centers horizontally */
@@ -16,9 +22,16 @@ div {
     width: 100vw;
 }
 
-#divBtn {
+.divInputs, .divBtn {
     border: 1px solid black;
     display: flex;
     justify-content: center; /* Centers horizontally */
     align-items: center;     /* Centers vertically */
+    height: 5vh;
+    width: 25vw;
+}
+
+input {
+    margin-left: 5px;
+    width: 25%;
 }
