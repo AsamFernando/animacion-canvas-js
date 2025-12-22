@@ -225,6 +225,7 @@ const draw = () => {
         keys[keyPressed].move(rectPlayer)
     } 
     
+    //probar colisiones descomentando de a uno
     // if(keyPressed) console.log(keys[keyPressed].onColision(rectPlayer, rects[1]))
     // console.log(colisionW(rectPlayer, rects[1]))
     // console.log(colisionA(rectPlayer, rects[1]))
@@ -310,8 +311,7 @@ inicioYInput.addEventListener('input', changePosY)
 
 
 //CORRECCIONES
-//BUG: al colisionar las aristas de rectPlayer con el rectangulo no permite avanzar hacia el rectangulo desde ninguno de los
-//4 lados
+//--
 
 //proximos cambios
 
@@ -333,3 +333,5 @@ inicioYInput.addEventListener('input', changePosY)
 //COMPLETADOS
 //incorporar colisiones con otros rectangulo -> hecho
 //agregar inputs para dar una posicion inicial -> hecho
+//BUG: al colisionar las aristas de rectPlayer con el rectangulo no permite avanzar hacia el rectangulo desde ninguno de los
+//4 lados -> solucionado
