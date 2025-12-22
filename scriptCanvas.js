@@ -37,7 +37,7 @@ const rects = [
         posX:175,
         posY:225,
         ancho:125,
-        alto:37.5,
+        alto:45,
         posXf() {return this.posX + this.ancho},
         posYf() {return this.posY + this.alto},
     },
@@ -57,6 +57,7 @@ const rects = [
 //lo mismo ocurre si pongo la velocidad en 3 y me paro el x = 20 e y = 20 voy a tener numeros negativos
 //al restar y me paso del inicio q es 0 0
 
+//funciones q usan Math.min y max para poder usar cualquier velocidad sin pasarme del canvas
 const minPos = (inicio, posicion, velocidad) =>  {
     return Math.max(inicio, posicion - velocidad)
 }
@@ -64,13 +65,86 @@ const maxPos = (final, posicion, velocidad) =>  {
     return Math.min(final, posicion + velocidad)
 }
 
+//separadas funciones de movimiento con control para no pasarse del canvas
+const moves = {
+    up(player) {if(!player.inicioY()) player.posY = minPos(0, player.posY, player.velocidad)},
+    down(player) {if(!player.finY()) player.posY = maxPos(canvas1.height - player.alto, player.posY, player.velocidad)}, 
+    left(player) {if(!player.inicioX()) player.posX = minPos(0, player.posX, player.velocidad)},
+    right(player) {if(!player.finX()) player.posX = maxPos(canvas1.width - player.ancho, player.posX, player.velocidad)}, 
+}
+
+const estaEnRangoV = (player, rect) => {
+    return (
+        player.posXf() >= rect.posX && player.posX <= rect.posXf()
+    )
+}
+const estaEnRangoH = (player, rect) => {
+    return (
+        player.posYf() >= rect.posY && player.posY <= rect.posYf()
+    )
+}
+
+//!!!Aclaracion
+//en las colisiones tambien hay q tener en cuenta que los anchos y altos de los rects sean multiplos de la velocidad
+//para poder tener true si estan en la misma posicion los dados que colisionan y tambien por los rangos V y H
+
+//chequea colision de lado superior de player con lado inferior de rectangulo
+const colisionTop = (player, rect) => {
+    let playerTop = player.posY
+    let rectBottom = rect.posYf()
+    return playerTop == rectBottom 
+}
+//chequea colision de lado inferior de player con lado superior de rectangulo
+const colisionBottom = (player, rect) => {
+    let playerBottom = player.posYf()
+    let rectTop = rect.posY
+    return playerBottom == rectTop
+}
+//chequea colision de lado izquierdo de player con lado derecho de rectangulo
+const colisionIzq = (player, rect) => {
+    let playerIzq = player.posX
+    let rectDer = rect.posXf()
+    return playerIzq == rectDer 
+}
+//chequea colision de lado derecho de player con lado izquierdo de rectangulo
+const colisionDer = (player, rect) => {
+    let playerDer = player.posXf()
+    let rectIzq = rect.posX
+    return playerDer == rectIzq
+}
+
+const colisionW = (player, rect) => {
+    return colisionTop(player, rect) && estaEnRangoV(player, rect)
+}
+const colisionS = (player, rect) => {
+    return colisionBottom(player, rect) && estaEnRangoV(player, rect)
+}
+const colisionA = (player, rect) => {
+    return colisionIzq(player, rect) && estaEnRangoH(player, rect)
+}
+const colisionD = (player, rect) => {
+    return colisionDer(player, rect) && estaEnRangoH(player, rect)
+}
+const colisionMock = (player, rect) => {
+    return false
+}
+
+//separadas keys en un objeto a parte con estado para frenar el movimiento cuando se colisiona y la funcion de movimiento
+const keys = {
+    w:{key:'w', state:false, onColision:colisionW, move:moves.up},
+    s:{key:'s', state:false, onColision:colisionS, move:moves.down},
+    a:{key:'a', state:false, onColision:colisionA, move:moves.left},
+    d:{key:'d', state:false, onColision:colisionD, move:moves.right},
+}
+
+
 const rectPlayer = {
     id:5,
     posX:inicioX,
     posY:inicioY,
     ancho:15,
     alto:25,
-    velocidad:3,
+    velocidad:5,
     // posXf:this.posX + this.ancho,//no funciona el this.posX ni el this.posY ya que al calcular la suma todavia no esta creado el objeto literal rectPlayer con sus propiedades y el this toma window en vez de posX o posY e intenta hacer window.posX o posY
     // posYf:this.posY + this.alto,//no funciona el this.posX ni el this.posY ya que al calcular la suma todavia no esta creado el objeto literal rectPlayer con sus propiedades y el this toma window en vez de posX o posY e intenta hacer window.posX o posY
     //se tiene q implementar como un getter, devolviendo la suma en una funcion
@@ -82,17 +156,12 @@ const rectPlayer = {
     finY() {return this.posYf() == canvas1.height},
     inicioX() {return this.posX == 0},
     inicioY() {return this.posY == 0},
-    w() {if(!this.inicioY()) this.posY = minPos(0, this.posY, this.velocidad)},
-    s() {if(!this.finY()) this.posY = maxPos(canvas1.height - this.alto, this.posY, this.velocidad)},
-    a() {if(!this.inicioX()) this.posX = minPos(0, this.posX, this.velocidad)},
-    d() {if(!this.finX()) this.posX = maxPos(canvas1.width - this.ancho, this.posX, this.velocidad)},
-    //refactorizado con dos funciones q usan Math.min y max para poder usar cualquier velocidad sin pasarme del canvas
 }
 
 let moving = false; //flag para arrancar la animacion de rectPlayer o frenarla
 let keyPressed = "" //variable para poder guardar el caracter de la key presionada en el evento y pasarla a rectPlayer con [] y usar la funcion de movimiento
-let myReq;
-let showCuadricula = false
+let myReq;//guardo el id del ultimo frame q se va a usar para cancelar la animacion pasandoselo a cancelAnimationFrame en terminarLoop
+let showCuadricula = false // flag para mostrar u ocultar la cuadricula con el boton, no fuciona si la animacion no esta corriendo
 let animacionCorriendo = false //flag para arrancar o terminar el loop draw inicia el false y cuando se cambia con el boton ejecuta draw() en switchLoop
 
 const dibujarRectangulo = ({posX, posY, ancho, alto}) => {
@@ -108,24 +177,25 @@ const dibujarRectangulos = () => {
 //funcion para detectar la colision de recPlayer con el 2do rectangulo de rects
 //se chequea que la posicion de los borde que chocarian sean igules menores o
 //mayores segun corresponda
-const detectarColision = (rect1, rect2) => {
-    let topRect1 = rect1.posY
-    let bottomRect1 = rect1.posYf()
-    let leftRect1 = rect1.posX
-    let rightRect1 = rect1.posXf()
-    let topRect2 = rect2.posY
-    let bottomRect2 = rect2.posYf()
-    let leftRect2 = rect2.posX
-    let rightRect2 = rect2.posXf()
-
+const detectarColision = (player, rect) => {
+    let playerTop = player.posY
+    let playerBottom = player.posYf()
+    let playerIzq = player.posX
+    let playerDer = player.posXf()
+    let rectTop = rect.posY
+    let rectBottom = rect.posYf()
+    let rectIzq = rect.posX
+    let rectDer = rect.posXf()
+    
     return (
-        bottomRect1 >= topRect2 &&
-        topRect1 <= bottomRect2 &&
-        rightRect1 >= leftRect2 &&
-        leftRect1 <= rightRect2
-    ) 
-
+        playerBottom >= rectTop &&
+        playerTop <= rectBottom &&
+        playerDer >= rectIzq &&
+        playerIzq <= rectDer
+    )
 }
+
+
 
 const draw = () => {
     // let contadorFrames = "cantidad de frames en devtools"
@@ -144,12 +214,22 @@ const draw = () => {
     if(showCuadricula) {
         mostrarCuadricula()
     }
-
+    //teniendo el estado en las keys verifico si es true uso la funcion move correspondiente pasandole el rectangulo q quiero mover
+    //el estado puede usarse para frenar el movimiento si hay colision, si cada tecla tiene el suyo propio se diferencia de moving
+    //q frenaria todos los movimientos, puediendo asi frenar un el movimiento q colisiona y poder usar otro q no esta colisionando
+    //para salir de la colision
+    //entonces el estado de cada tecla dependeria tambien de las colisiones y a cada una le corresponderia una colision en alguno de los
+    //sentidos
     if(moving) {
-        rectPlayer[keyPressed]()
+        if(keys[keyPressed].state && !keys[keyPressed].onColision(rectPlayer, rects[1])) {
+            keys[keyPressed].move(rectPlayer)
+        } 
     }
 
-    console.log(detectarColision(rectPlayer, rects[1]))
+    // console.log(detectarColision(rectPlayer, rects[1]))
+    
+    if(keyPressed) console.log(keys[keyPressed].onColision(rectPlayer, rects[1]))
+    // console.log(estaEnRangoH(rectPlayer, rects[1]))
 
     //permite evitar el loop de draw para poder correrlo por fuera de requestAnimationFrame
     //y poder dibujar el 1 frame o dibujar el frame con la posicion cambiada de rectPlayer
@@ -191,14 +271,19 @@ const switchCuadricula = (e) => {
     showCuadricula = !showCuadricula
 }
 
+//uso directamente el objeto keys para ver si la letra presionada es wasd y si es guardo el caracter en keyPressed, cambio el estado
+//de la letra en keys a true y seteo moving en true
 const mover = (e) => {
-    const keys = ['w', 'a', 's', 'd']
-    if(keys.includes(e.key)) {
-        keyPressed = e.key
+    if(keys[e.key]) {
         moving = true
+        keyPressed = e.key
+        keys[e.key].state = true
     }
 }
+
+//cuando suelto la tecla cambio el estado de la misma a false junto con moving
 const frenar = (e) => {
+    keys[e.key].state = false
     moving = false
 }
 
@@ -237,3 +322,4 @@ inicioYInput.addEventListener('input', changePosY)
 //que al pegar un salto se pueda desplazar en el aire con w y s
 //incorporar desplazamiento en diagonal
 //agregar inputs para dar una posicion inicial
+//dividir en varios archivos tipo, colisiones.js, keys.js, inputs.js, player.js, y objects.js ... etc., hasta dejar solo draw() en este archivo.
