@@ -1,5 +1,5 @@
 import mostrarCuadricula from "../modulos_js/cuadricula.js"
-import {colisionW, colisionA, colisionS, colisionD} from "../modulos_js/colisiones.js"
+import {keys} from "../modulos_js/controles.js"
 
 const canvas1 = document.getElementById("canvas1")
 const ctx1 = canvas1.getContext("2d")
@@ -30,43 +30,6 @@ const rects = [
     {id:3, posX:350, posY:200, ancho:125, alto:25},
     {id:4, posX:525, posY:175, ancho:125, alto:15}
 ]
-//tener en cuenta la velocidad, el ancho y alto del rectangulo ya que la suma de ambos podria no dar
-//un valor igual a la resta entre el ancho o el alto del rectangulo y el canvas por ej:
-//rectangulo
-//velocidad = 10 ancho = 15 y alto = 25 
-//canvas
-//ancho = 600 alto = 300
-//la suma posX del rectangulo mas velocidad: 580 + 10 = 590 se pasa de la resta entre el ancho del
-//canvas y el ancho del rectangulo: 600 - 15 = 585 por lo que las funciones de fin en x e y
-//nunca van a dar false ya que posX nunca toma el valor 585
-//por lo tanto el rectangulo se sale del canvas hacia abajo y la derecha
-//lo mismo ocurre si pongo la velocidad en 3 y me paro el x = 20 e y = 20 voy a tener numeros negativos
-//al restar y me paso del inicio q es 0 0
-
-//funciones q usan Math.min y max para poder usar cualquier velocidad sin pasarme del canvas
-const minPos = (inicio, posicion, velocidad) =>  {
-    return Math.max(inicio, posicion - velocidad)
-}
-const maxPos = (final, posicion, velocidad) =>  {
-    return Math.min(final, posicion + velocidad)
-}
-
-//separadas funciones de movimiento con control para no pasarse del canvas
-const moves = {
-    up(player) {if(!player.inicioY()) player.posY = minPos(0, player.posY, player.velocidad)},
-    down(player) {if(!player.finY()) player.posY = maxPos(canvas1.height - player.alto, player.posY, player.velocidad)}, 
-    left(player) {if(!player.inicioX()) player.posX = minPos(0, player.posX, player.velocidad)},
-    right(player) {if(!player.finX()) player.posX = maxPos(canvas1.width - player.ancho, player.posX, player.velocidad)}, 
-}
-
-//separadas keys en un objeto a parte con estado para frenar el movimiento cuando se colisiona y la funcion de movimiento
-const keys = {
-    w:{key:'w', state:false, onColision:colisionW, move:moves.up},
-    s:{key:'s', state:false, onColision:colisionS, move:moves.down},
-    a:{key:'a', state:false, onColision:colisionA, move:moves.left},
-    d:{key:'d', state:false, onColision:colisionD, move:moves.right},
-}
-
 
 const player = {
     id:5,
@@ -88,6 +51,7 @@ const player = {
     inicioY() {return this.posY == 0},
 }
 
+let FPS = 0 //pasar a archivo UI
 let keyPressed = "w" //variable para poder guardar el caracter de la key presionada en el evento y pasarla a player con [] y usar la funcion de movimiento
 let myReq;//guardo el id del ultimo frame q se va a usar para cancelar la animacion pasandoselo a cancelAnimationFrame en terminarLoop
 let showCuadricula = false // flag para mostrar u ocultar la cuadricula con el boton, no fuciona si la animacion no esta corriendo
@@ -103,34 +67,11 @@ const dibujarRectangulos = () => {
     }
 }
 
-//funcion para detectar la colision de recPlayer con el 2do rectangulo de rects
-//se chequea que la posicion de los borde que chocarian sean igules menores o
-//mayores segun corresponda
-const detectarColision = (player, rect) => {
-    let playerTop = player.posY
-    let playerBottom = player.posYf()
-    let playerIzq = player.posX
-    let playerDer = player.posXf()
-    let rectTop = rect.posY
-    let rectBottom = rect.posYf()
-    let rectIzq = rect.posX
-    let rectDer = rect.posXf()
-    
-    return (
-        playerBottom >= rectTop &&
-        playerTop <= rectBottom &&
-        playerDer >= rectIzq &&
-        playerIzq <= rectDer
-    )
-}
-
-
-
 const draw = () => {
-    // let contadorFrames = "FPS"
-    // console.log(contadorFrames)
-
+    FPS += 1
+    //hacer objetos con las propiedades q se van a mostrar y pasar como funcion creadora a archivo UI
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
+    ctx1.fillText(`FPS: ${FPS}`, 599, 8, 50) //pasar a archivo UI
     ctx1.fillText(`X: ${player.posX} - Y: ${player.posY}`, 1, 8, 60)
     ctx1.fillText(`rectX: ${rects[1].posX} - rectY: ${rects[1].posY}`, 70, 8, 120)
     ctx1.fillText(`Xf: ${player.posXf()} - Yf: ${player.posYf()}`, 1, 18, 60)
@@ -151,7 +92,7 @@ const draw = () => {
     //sentidos
     //por el momento no se necesita el state de las keys pero puede llegar a servir para separar responsabilidades
     if(keys[keyPressed].state && !keys[keyPressed].onColision(player, rects[1])) {
-        keys[keyPressed].move(player)
+        keys[keyPressed].move(player, canvas1)
     } 
     
     //probar colisiones descomentando de a uno
@@ -258,6 +199,10 @@ inicioYInput.addEventListener('input', changePosY)
 //poder colisionar con cualquier rectangulo del listado
 //incorporar colisiones con objetos distintos de rectangulos, por ej circulo o rombo
 //agregar una rama con todos los comentarios del codigo
+//hacer una clase rectangulo q va a permitir agregar mas funcionalidad al player y escenario 
+//a la que le paso los minimos valores de representacion y tienen las
+//funciones para posicionarse y colisionar
+//crear archivo UI para los inputs de posicion, botones y cuadricula
 
 //COMPLETADOS
 //incorporar colisiones con otros rectangulo -> hecho
