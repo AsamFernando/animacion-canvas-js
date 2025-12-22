@@ -29,6 +29,7 @@ const mostrarCuadricula = () => {
 //hacer una clase rectagulo o forma que reciba la cantidad de rects o huecos y cree
 //calculando los valores de ancho alto y tamaño en base a las cantidades y los ubique de manera
 //equivalente en el canvas
+//por el momento los rectangulos son multiplos de 5 para acertar colisiones por posicion de x e y
 
 const rects = [
     {id:1, posX:0, posY:250, ancho:125, alto:50},
@@ -42,7 +43,7 @@ const rects = [
         posYf() {return this.posY + this.alto},
     },
     {id:3, posX:350, posY:200, ancho:125, alto:25},
-    {id:4, posX:525, posY:175, ancho:125, alto:12.5}
+    {id:4, posX:525, posY:175, ancho:125, alto:15}
 ]
 //tener en cuenta la velocidad, el ancho y alto del rectangulo ya que la suma de ambos podria no dar
 //un valor igual a la resta entre el ancho o el alto del rectangulo y el canvas por ej:
@@ -75,12 +76,12 @@ const moves = {
 
 const estaEnRangoV = (player, rect) => {
     return (
-        player.posXf() >= rect.posX && player.posX <= rect.posXf()
+        player.posXf() > rect.posX && player.posX < rect.posXf()
     )
 }
 const estaEnRangoH = (player, rect) => {
     return (
-        player.posYf() >= rect.posY && player.posY <= rect.posYf()
+        player.posYf() > rect.posY && player.posY < rect.posYf()
     )
 }
 
@@ -158,7 +159,7 @@ const rectPlayer = {
     inicioY() {return this.posY == 0},
 }
 
-let keyPressed = "" //variable para poder guardar el caracter de la key presionada en el evento y pasarla a rectPlayer con [] y usar la funcion de movimiento
+let keyPressed = "w" //variable para poder guardar el caracter de la key presionada en el evento y pasarla a rectPlayer con [] y usar la funcion de movimiento
 let myReq;//guardo el id del ultimo frame q se va a usar para cancelar la animacion pasandoselo a cancelAnimationFrame en terminarLoop
 let showCuadricula = false // flag para mostrar u ocultar la cuadricula con el boton, no fuciona si la animacion no esta corriendo
 let animacionCorriendo = false //flag para arrancar o terminar el loop draw inicia el false y cuando se cambia con el boton ejecuta draw() en switchLoop
@@ -220,14 +221,15 @@ const draw = () => {
     //entonces el estado de cada tecla dependeria tambien de las colisiones y a cada una le corresponderia una colision en alguno de los
     //sentidos
     //por el momento no se necesita el state de las keys pero puede llegar a servir para separar responsabilidades
-    if(keyPressed && !keys[keyPressed].state && !keys[keyPressed].onColision(rectPlayer, rects[1])) {
+    if(keys[keyPressed].state && !keys[keyPressed].onColision(rectPlayer, rects[1])) {
         keys[keyPressed].move(rectPlayer)
     } 
-
-    // console.log(detectarColision(rectPlayer, rects[1]))
     
-    if(keyPressed) console.log(keys[keyPressed].onColision(rectPlayer, rects[1]))
-    // console.log(estaEnRangoH(rectPlayer, rects[1]))
+    // if(keyPressed) console.log(keys[keyPressed].onColision(rectPlayer, rects[1]))
+    // console.log(colisionW(rectPlayer, rects[1]))
+    // console.log(colisionA(rectPlayer, rects[1]))
+    // console.log(colisionS(rectPlayer, rects[1]))
+    // console.log(colisioD(rectPlayer, rects[1]))
 
     //permite evitar el loop de draw para poder correrlo por fuera de requestAnimationFrame
     //y poder dibujar el 1 frame o dibujar el frame con la posicion cambiada de rectPlayer
@@ -324,6 +326,7 @@ inicioYInput.addEventListener('input', changePosY)
 //que al pegar un salto se pueda desplazar en el aire con w y s
 //incorporar desplazamiento en diagonal
 //dividir en varios archivos tipo, colisiones.js, keys.js, inputs.js, player.js, y objects.js ... etc., hasta dejar solo draw() en este archivo.
+//poder colisionar con cualquier rectangulo del listado
 //incorporar colisiones con objetos distintos de rectangulos, por ej circulo o rombo
 //agregar una rama con todos los comentarios del codigo
 
