@@ -158,7 +158,6 @@ const rectPlayer = {
     inicioY() {return this.posY == 0},
 }
 
-let moving = false; //flag para arrancar la animacion de rectPlayer o frenarla
 let keyPressed = "" //variable para poder guardar el caracter de la key presionada en el evento y pasarla a rectPlayer con [] y usar la funcion de movimiento
 let myReq;//guardo el id del ultimo frame q se va a usar para cancelar la animacion pasandoselo a cancelAnimationFrame en terminarLoop
 let showCuadricula = false // flag para mostrar u ocultar la cuadricula con el boton, no fuciona si la animacion no esta corriendo
@@ -221,11 +220,9 @@ const draw = () => {
     //entonces el estado de cada tecla dependeria tambien de las colisiones y a cada una le corresponderia una colision en alguno de los
     //sentidos
     //por el momento no se necesita el state de las keys pero puede llegar a servir para separar responsabilidades
-    if(moving) {
-        if(!keys[keyPressed].onColision(rectPlayer, rects[1])) {
-            keys[keyPressed].move(rectPlayer)
-        } 
-    }
+    if(keyPressed && !keys[keyPressed].state && !keys[keyPressed].onColision(rectPlayer, rects[1])) {
+        keys[keyPressed].move(rectPlayer)
+    } 
 
     // console.log(detectarColision(rectPlayer, rects[1]))
     
@@ -276,17 +273,15 @@ const switchCuadricula = (e) => {
 //de la letra en keys a true y seteo moving en true
 const mover = (e) => {
     if(keys[e.key]) {
-        moving = true
         keyPressed = e.key
         keys[e.key].state = true
     }
 }
 
-//cuando suelto la tecla cambio el estado de la misma a false junto con moving
+//cuando suelto la tecla verifico que sea de una de las keys y cambio el estado de la misma a false junto con moving
 const frenar = (e) => {
     if(keys[e.key]) {
         keys[e.key].state = false
-        moving = false
     }
         
 }
@@ -321,9 +316,14 @@ inicioYInput.addEventListener('input', changePosY)
 //hacer que la velocidad sea constante sin depender de refresh rate del monitor, con timestamp
 //incorporar aceleracion al rectangulo
 //incorporar gravedad y su aceleracion
-//incorporar colisiones con otros rectangulo u objetos
+//refactorizar las funciones que verifican las colisiones
 //que el rectangulo pueda pegar un salto presionando la w o barra espaciadora
 //que al pegar un salto se pueda desplazar en el aire con w y s
 //incorporar desplazamiento en diagonal
-//agregar inputs para dar una posicion inicial
 //dividir en varios archivos tipo, colisiones.js, keys.js, inputs.js, player.js, y objects.js ... etc., hasta dejar solo draw() en este archivo.
+//incorporar colisiones con objetos distintos de rectangulos, por ej circulo o rombo
+//agregar una rama con todos los comentarios del codigo
+
+//COMPLETADOS
+//incorporar colisiones con otros rectangulo -> hecho
+//agregar inputs para dar una posicion inicial -> hecho
