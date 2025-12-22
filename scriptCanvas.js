@@ -225,6 +225,7 @@ const draw = () => {
         keys[keyPressed].move(rectPlayer)
     } 
     
+    //probar colisiones descomentando de a uno
     // if(keyPressed) console.log(keys[keyPressed].onColision(rectPlayer, rects[1]))
     // console.log(colisionW(rectPlayer, rects[1]))
     // console.log(colisionA(rectPlayer, rects[1]))
