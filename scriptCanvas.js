@@ -220,8 +220,9 @@ const draw = () => {
     //para salir de la colision
     //entonces el estado de cada tecla dependeria tambien de las colisiones y a cada una le corresponderia una colision en alguno de los
     //sentidos
+    //por el momento no se necesita el state de las keys pero puede llegar a servir para separar responsabilidades
     if(moving) {
-        if(keys[keyPressed].state && !keys[keyPressed].onColision(rectPlayer, rects[1])) {
+        if(!keys[keyPressed].onColision(rectPlayer, rects[1])) {
             keys[keyPressed].move(rectPlayer)
         } 
     }
@@ -283,8 +284,11 @@ const mover = (e) => {
 
 //cuando suelto la tecla cambio el estado de la misma a false junto con moving
 const frenar = (e) => {
-    keys[e.key].state = false
-    moving = false
+    if(keys[e.key]) {
+        keys[e.key].state = false
+        moving = false
+    }
+        
 }
 
 //funciones para el evento de cambiar de posicion a rectPlayer
