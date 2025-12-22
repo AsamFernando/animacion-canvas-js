@@ -307,6 +307,9 @@ inicioXInput.addEventListener('input', changePosX)
 inicioYInput.addEventListener('input', changePosY)
 
 
+//CORRECCIONES
+//BUG: al colisionar las aristas de rectPlayer con el rectangulo no permite avanzar hacia el rectangulo desde ninguno de los
+//4 lados
 
 //proximos cambios
 
