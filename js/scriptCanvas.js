@@ -1,3 +1,5 @@
+import mostrarCuadricula from "../modulos_js/cuadricula.js"
+
 const canvas1 = document.getElementById("canvas1")
 const ctx1 = canvas1.getContext("2d")
 const body = document.body
@@ -7,24 +9,6 @@ const inicioXInput = document.getElementById("inicioX")
 const inicioYInput = document.getElementById("inicioY")
 const inicioX = parseFloat(inicioXInput.value)
 const inicioY = parseFloat(inicioYInput.value)
-
-const mostrarCuadricula = () => {
-    ctx1.beginPath();
-    
-    const cuadY = 12.5
-    const cuadX = 12.5
-    
-    for (let yPos = cuadY; yPos < canvas1.height; yPos += cuadY) {
-        ctx1.moveTo(0, yPos);
-        ctx1.lineTo(canvas1.width, yPos);
-    }
-    for (let xPos = cuadX; xPos < canvas1.width; xPos += cuadX) {
-        ctx1.moveTo(xPos, 0);
-        ctx1.lineTo(xPos, canvas1.height);
-    }
-    ctx1.strokeStyle = "grey";
-    ctx1.stroke();
-}
 
 //hacer una clase rectagulo o forma que reciba la cantidad de rects o huecos y cree
 //calculando los valores de ancho alto y tamaño en base a las cantidades y los ubique de manera
@@ -212,7 +196,7 @@ const draw = () => {
     dibujarRectangulos()
 
     if(showCuadricula) {
-        mostrarCuadricula()
+        mostrarCuadricula(ctx1)
     }
     //teniendo el estado en las keys verifico si es true uso la funcion move correspondiente pasandole el rectangulo q quiero mover
     //el estado puede usarse para frenar el movimiento si hay colision, si cada tecla tiene el suyo propio se diferencia de moving
