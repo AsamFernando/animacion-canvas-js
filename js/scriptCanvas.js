@@ -1,4 +1,4 @@
-import mostrarCuadricula from "../modulos_js/cuadricula.js"
+import mostrarCuadricula from "../modulos_js/UI.js"
 import {keys} from "../modulos_js/controles.js"
 import Rectangulo from "../modulos_js/escenario.js"
 import Player from "../modulos_js/player.js"
@@ -59,9 +59,8 @@ const draw = () => {
     
     dibujarRectangulos()
 
-    if(showCuadricula) {
-        mostrarCuadricula(ctx1)
-    }
+    mostrarCuadricula(canvas1, ctx1)
+
     //teniendo el estado en las keys verifico si es true uso la funcion move correspondiente pasandole el rectangulo q quiero mover
     //el estado puede usarse para frenar el movimiento si hay colision, si cada tecla tiene el suyo propio se diferencia de moving
     //q frenaria todos los movimientos, puediendo asi frenar un el movimiento q colisiona y poder usar otro q no esta colisionando
