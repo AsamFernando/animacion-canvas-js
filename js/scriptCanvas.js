@@ -1,5 +1,7 @@
 import mostrarCuadricula from "../modulos_js/cuadricula.js"
 import {keys} from "../modulos_js/controles.js"
+import Rectangulo from "../modulos_js/escenario.js"
+import Player from "../modulos_js/player.js"
 
 const canvas1 = document.getElementById("canvas1")
 const ctx1 = canvas1.getContext("2d")
@@ -11,45 +13,20 @@ const inicioYInput = document.getElementById("inicioY")
 const inicioX = parseFloat(inicioXInput.value)
 const inicioY = parseFloat(inicioYInput.value)
 
-//hacer una clase rectagulo o forma que reciba la cantidad de rects o huecos y cree
-//calculando los valores de ancho alto y tamaño en base a las cantidades y los ubique de manera
-//equivalente en el canvas
-//por el momento los rectangulos son multiplos de 5 para acertar colisiones por posicion de x e y
-
-const rects = [
+const rectsProps = [
     {id:1, posX:0, posY:250, ancho:125, alto:50},
-    {
-        id:2,
-        posX:175,
-        posY:225,
-        ancho:125,
-        alto:45,
-        posXf() {return this.posX + this.ancho},
-        posYf() {return this.posY + this.alto},
-    },
+    {id:2, posX:175, posY:225, ancho:125, alto:45},
     {id:3, posX:350, posY:200, ancho:125, alto:25},
     {id:4, posX:525, posY:175, ancho:125, alto:15}
 ]
+const playerProps = {id:5, posX:inicioX, posY:inicioY, ancho:10, alto:10, velocidad:5}
 
-const player = {
-    id:5,
-    posX:inicioX,
-    posY:inicioY,
-    ancho:10,
-    alto:10,
-    velocidad:5,
-    // posXf:this.posX + this.ancho,//no funciona el this.posX ni el this.posY ya que al calcular la suma todavia no esta creado el objeto literal player con sus propiedades y el this toma window en vez de posX o posY e intenta hacer window.posX o posY
-    // posYf:this.posY + this.alto,//no funciona el this.posX ni el this.posY ya que al calcular la suma todavia no esta creado el objeto literal player con sus propiedades y el this toma window en vez de posX o posY e intenta hacer window.posX o posY
-    //se tiene q implementar como un getter, devolviendo la suma en una funcion
-    //si uso get posXf () {return this.posX + this.ancho} luego puedo llamarla con this.posXf sin parentesis
-    //lo ideal es usar get ya que esto es un valor calculado q deriva de las propiedades y no una accion, efecto o cambio de estado q se hacen con metodos directamente 
-    posXf() {return this.posX + this.ancho},
-    posYf() {return this.posY + this.alto},
-    finX() {return this.posXf() == canvas1.width},
-    finY() {return this.posYf() == canvas1.height},
-    inicioX() {return this.posX == 0},
-    inicioY() {return this.posY == 0},
+const crearRect = (props) => {
+    return new Rectangulo(props)
 }
+
+const rects = rectsProps.map(r => crearRect(r))
+const player = new Player(playerProps)
 
 let FPS = 0 //pasar a archivo UI
 let keyPressed = "w" //variable para poder guardar el caracter de la key presionada en el evento y pasarla a player con [] y usar la funcion de movimiento
@@ -69,13 +46,14 @@ const dibujarRectangulos = () => {
 
 const draw = () => {
     FPS += 1
+    //los get de player o de los rectangulos se utilizan sin ejecutar con () como si fueran propiedades no metodos
     //hacer objetos con las propiedades q se van a mostrar y pasar como funcion creadora a archivo UI
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
     ctx1.fillText(`FPS: ${FPS}`, 599, 8, 50) //pasar a archivo UI
     ctx1.fillText(`X: ${player.posX} - Y: ${player.posY}`, 1, 8, 60)
     ctx1.fillText(`rectX: ${rects[1].posX} - rectY: ${rects[1].posY}`, 70, 8, 120)
-    ctx1.fillText(`Xf: ${player.posXf()} - Yf: ${player.posYf()}`, 1, 18, 60)
-    ctx1.fillText(`rectXf: ${rects[1].posXf()} - rectYf: ${rects[1].posYf()}`, 70, 18, 120)
+    ctx1.fillText(`Xf: ${player.posXf} - Yf: ${player.posYf}`, 1, 18, 60)
+    ctx1.fillText(`rectXf: ${rects[1].posXf} - rectYf: ${rects[1].posYf}`, 70, 18, 120)
     
     dibujarRectangulo(player)
     
@@ -93,14 +71,11 @@ const draw = () => {
     //por el momento no se necesita el state de las keys pero puede llegar a servir para separar responsabilidades
     if(keys[keyPressed].state && !keys[keyPressed].onColision(player, rects[1])) {
         keys[keyPressed].move(player, canvas1)
-    } 
+    }
     
     //probar colisiones descomentando de a uno
     // if(keyPressed) console.log(keys[keyPressed].onColision(player, rects[1]))
-    // console.log(colisionW(player, rects[1]))
-    // console.log(colisionA(player, rects[1]))
-    // console.log(colisionS(player, rects[1]))
-    // console.log(colisioD(player, rects[1]))
+    
 
     //permite evitar el loop de draw para poder correrlo por fuera de requestAnimationFrame
     //y poder dibujar el 1 frame o dibujar el frame con la posicion cambiada de player
@@ -199,13 +174,18 @@ inicioYInput.addEventListener('input', changePosY)
 //poder colisionar con cualquier rectangulo del listado
 //incorporar colisiones con objetos distintos de rectangulos, por ej circulo o rombo
 //agregar una rama con todos los comentarios del codigo
-//hacer una clase rectangulo q va a permitir agregar mas funcionalidad al player y escenario 
-//a la que le paso los minimos valores de representacion y tienen las
-//funciones para posicionarse y colisionar
 //crear archivo UI para los inputs de posicion, botones y cuadricula
+//hacer una clase rectagulo o forma que reciba la cantidad de rects o huecos y cree
+//calculando los valores de ancho alto y tamaño en base a las cantidades y los ubique de manera
+//equivalente en el canvas
+//por el momento los rectangulos son multiplos de 5 para acertar colisiones por posicion de x e y
+//ver flujo de estudio con comentarios ramas e historial de ramas y commits
 
 //COMPLETADOS
 //incorporar colisiones con otros rectangulo -> hecho
 //agregar inputs para dar una posicion inicial -> hecho
 //BUG: al colisionar las aristas de player con el rectangulo no permite avanzar hacia el rectangulo desde ninguno de los
 //4 lados -> solucionado
+//hacer una clase rectangulo q va a permitir agregar mas funcionalidad al player y escenario 
+//a la que le paso los minimos valores de representacion y tienen las
+//funciones para posicionarse y colisionar -> hecho
