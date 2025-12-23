@@ -33,7 +33,6 @@ let keyPressed = "w"
 let myReq;
 let showCuadricula = false
 let animacionCorriendo = false
-let variablePrueba = false //prueba de variable para merge de ramas
 
 const dibujarRectangulo = ({posX, posY, ancho, alto}) => {
     ctx1.fillRect(posX, posY, ancho, alto)
