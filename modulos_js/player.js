@@ -8,9 +8,3 @@ class Player extends Rectangulo {
 }
 
 export default Player;
-
-//COMENTARIOS
-//Clase para crear el rectangulo player q agrega la velocidad
-//recibe un objeto con las propiedades del player q agrega velocidad
-//super tiene q recibir los atributos q se le pasan a Rectangulo heredando propiedades y metodos
-//y las props a parte de estas, se asignan a los this

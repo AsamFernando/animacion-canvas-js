@@ -28,11 +28,11 @@ const crearRect = (props) => {
 const rects = rectsProps.map(r => crearRect(r))
 const player = new Player(playerProps)
 
-let FPS = 0 //pasar a archivo UI
-let keyPressed = "w" //variable para poder guardar el caracter de la key presionada en el evento y pasarla a player con [] y usar la funcion de movimiento
-let myReq;//guardo el id del ultimo frame q se va a usar para cancelar la animacion pasandoselo a cancelAnimationFrame en terminarLoop
-let showCuadricula = false // flag para mostrar u ocultar la cuadricula con el boton, no fuciona si la animacion no esta corriendo
-let animacionCorriendo = false //flag para arrancar o terminar el loop draw inicia el false y cuando se cambia con el boton ejecuta draw() en switchLoop
+let FPS = 0
+let keyPressed = "w"
+let myReq;
+let showCuadricula = false
+let animacionCorriendo = false
 
 const dibujarRectangulo = ({posX, posY, ancho, alto}) => {
     ctx1.fillRect(posX, posY, ancho, alto)
@@ -46,10 +46,9 @@ const dibujarRectangulos = () => {
 
 const draw = () => {
     FPS += 1
-    //los get de player o de los rectangulos se utilizan sin ejecutar con () como si fueran propiedades no metodos
-    //hacer objetos con las propiedades q se van a mostrar y pasar como funcion creadora a archivo UI
+    
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
-    ctx1.fillText(`FPS: ${FPS}`, 599, 8, 50) //pasar a archivo UI
+    ctx1.fillText(`FPS: ${FPS}`, 599, 8, 50) 
     ctx1.fillText(`X: ${player.posX} - Y: ${player.posY}`, 1, 8, 60)
     ctx1.fillText(`rectX: ${rects[1].posX} - rectY: ${rects[1].posY}`, 70, 8, 120)
     ctx1.fillText(`Xf: ${player.posXf} - Yf: ${player.posYf}`, 1, 18, 60)
@@ -62,30 +61,17 @@ const draw = () => {
     if(showCuadricula) {
         mostrarCuadricula(ctx1)
     }
-    //teniendo el estado en las keys verifico si es true uso la funcion move correspondiente pasandole el rectangulo q quiero mover
-    //el estado puede usarse para frenar el movimiento si hay colision, si cada tecla tiene el suyo propio se diferencia de moving
-    //q frenaria todos los movimientos, puediendo asi frenar un el movimiento q colisiona y poder usar otro q no esta colisionando
-    //para salir de la colision
-    //entonces el estado de cada tecla dependeria tambien de las colisiones y a cada una le corresponderia una colision en alguno de los
-    //sentidos
-    //por el momento no se necesita el state de las keys pero puede llegar a servir para separar responsabilidades
+    
     if(keys[keyPressed].state && !keys[keyPressed].onColision(player, rects[1])) {
         keys[keyPressed].move(player, canvas1)
     }
     
-    //probar colisiones descomentando de a uno
-    // if(keyPressed) console.log(keys[keyPressed].onColision(player, rects[1]))
-    
-
-    //permite evitar el loop de draw para poder correrlo por fuera de requestAnimationFrame
-    //y poder dibujar el 1 frame o dibujar el frame con la posicion cambiada de player
-    //cuando no esta corriendo la animacion
     if(animacionCorriendo) {
         myReq = window.requestAnimationFrame(draw)
     }
 }
 
-draw() //dibuja el primer frame con la posicion por defecto en el value de los input
+draw() 
 
 const terminarLoop = (e) => {
     window.cancelAnimationFrame(myReq)
@@ -117,8 +103,6 @@ const switchCuadricula = (e) => {
     showCuadricula = !showCuadricula
 }
 
-//uso directamente el objeto keys para ver si la letra presionada es wasd y si es guardo el caracter en keyPressed, cambio el estado
-//de la letra en keys a true y seteo moving en true
 const mover = (e) => {
     if(keys[e.key]) {
         keyPressed = e.key
@@ -126,7 +110,6 @@ const mover = (e) => {
     }
 }
 
-//cuando suelto la tecla verifico que sea de una de las keys y cambio el estado de la misma a false junto con moving
 const frenar = (e) => {
     if(keys[e.key]) {
         keys[e.key].state = false
@@ -134,7 +117,6 @@ const frenar = (e) => {
         
 }
 
-//funciones para el evento de cambiar de posicion a player
 const changePosX = (e) => {
     player.posX = parseFloat(e.target.value)
     if(!animacionCorriendo) draw()
@@ -148,12 +130,8 @@ window.addEventListener('keydown', mover)
 window.addEventListener('keyup', frenar)
 switchAnimacionBtn.addEventListener('click', switchLoop)
 mostrarCuadriculaBtn.addEventListener('click', switchCuadricula)
-
-//permite cambiar la posicion inicial de player en x e y con los inputs y dibujarla con
-//draw() sin comenzar el loop, este solo inicia si le doy al boton comenzar animacion
 inicioXInput.addEventListener('input', changePosX)
 inicioYInput.addEventListener('input', changePosY)
-
 
 //CORRECCIONES
 //--
