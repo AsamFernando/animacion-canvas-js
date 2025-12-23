@@ -1,10 +1,4 @@
-const switchAnimacionBtn = document.getElementById("switchAnimacionBtn")
 const mostrarCuadriculaBtn = document.getElementById("mostrarCuadriculaBtn")
-const inicioXInput = document.getElementById("inicioX")
-const inicioYInput = document.getElementById("inicioY")
-const inicioX = parseFloat(inicioXInput.value)
-const inicioY = parseFloat(inicioYInput.value)
-
 let showCuadricula = false // flag para mostrar u ocultar la cuadricula con el boton, no fuciona si la animacion no esta corriendo
 
 const flipSiNoX = (distX, prop1, prop2) => {
@@ -23,16 +17,10 @@ const dibujarCuadricula = (distX, distY, canvas, contexto) => {
     }
 }
 
-//el if q permitia dibujar la cuadricula en draw se pone dentro de mostrarCuadricula asi el flag controla si se ejecuta el codigo dentro
-//cuando ocurre el evento del boton
-
 const mostrarCuadricula = (canvas, contexto) => {
     if(showCuadricula) {
         contexto.beginPath();
-        
-        const cuadY = 12.5
-        const cuadX = 12.5
-        
+
         dibujarCuadricula(12.5, 0, canvas, contexto)
         dibujarCuadricula(0, 12.5, canvas, contexto)
 
@@ -51,7 +39,8 @@ mostrarCuadriculaBtn.addEventListener('click', switchCuadricula)
 export default mostrarCuadricula
 
 //CAMBIOS
-//refactorizar los for en mostrarCuadricula
+//refactorizar los for en mostrarCuadricula -> hecho
+//refactorizar dibujar cuadricula para q pueda aceptar valores mayores a cero en distX y distY y se ejecute solo una vez en mostrarCuadricula
 
 //COMENTARIOS
 /* 
@@ -61,6 +50,10 @@ Se ejecuta en la funcion draw() que realiza el loop de dibujado cuando el flag s
 por el boton es true.
 No muestra la cuadricula si la animacion esta terminada, solo cuando esta corriendo.
 
+//el if q permitia dibujar la cuadricula en draw se pone dentro de mostrarCuadricula asi el flag controla si se ejecuta el codigo dentro
+//cuando ocurre el evento del boton
+
+
 la funcion flipSiNoX usada dentro del for sirve para dar vuelta los argumentos de las funciones moveTo y lineTo
 devolviendo un objeto donde se intercambian los values segun si la posicion x es cero o no.
 A su vez se utiliza antes de for por fuera para obtener un objeto con los values de ancho y alto de canvas en un orden u otro segun la misma condicion
@@ -68,7 +61,7 @@ y la 1er propiedad del resultado se utiliza como argumento del for mientras q la
 parametros de lineTo.
 
 !!!Aclaracion
-a pesar del refactor de mostrarCuadricula, resulta mas legible implementado con 2 for.
+a pesar del refactor de mostrarCuadricula, resulta mas legible implementado con 2 for. Convendria usar array al devolver con flipSiNoX en vez de objetos
 Tambien podria implementarse con un for y una varible q diga si es vertical o no y ahi decidir como se pasan los argumentos de moveTo y lineTo y
 tambien pasar al for los argumentos necesarios segun esta.
 
