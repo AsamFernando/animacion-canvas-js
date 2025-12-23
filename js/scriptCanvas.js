@@ -8,10 +8,6 @@ const canvas1 = document.getElementById("canvas1")
 const ctx1 = canvas1.getContext("2d")
 const body = document.body
 const switchAnimacionBtn = document.getElementById("switchAnimacionBtn")
-const inicioXInput = document.getElementById("inicioX")
-const inicioYInput = document.getElementById("inicioY")
-const inicioX = parseFloat(inicioXInput.value)
-const inicioY = parseFloat(inicioYInput.value)
 
 const rectsProps = [
     {id:'rect1', posX:0, posY:250, ancho:125, alto:50},
@@ -19,7 +15,7 @@ const rectsProps = [
     {id:'rect3', posX:350, posY:200, ancho:125, alto:25},
     {id:'rect4', posX:525, posY:175, ancho:125, alto:15}
 ]
-const playerProps = {id:'player1', posX:inicioX, posY:inicioY, ancho:10, alto:10, velocidad:5}
+const playerProps = {id:'player1', posX:20, posY:20, ancho:10, alto:10, velocidad:5}
 
 const crearRect = (props) => {
     return new Rectangulo(props)
@@ -83,7 +79,7 @@ const switchLoop = (e) => {
 
 switchAnimacionBtn.addEventListener('click', switchLoop)
 
-export {animacionCorriendo, player, draw}
+export {animacionCorriendo, player, draw, playerProps}
 
 //CORRECCIONES
 //--

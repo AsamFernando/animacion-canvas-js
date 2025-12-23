@@ -1,7 +1,10 @@
-import { player, animacionCorriendo, draw } from "../js/scriptCanvas"
+import { player, animacionCorriendo, draw, playerProps} from "../js/scriptCanvas"
 
 const inicioXInput = document.getElementById("inicioX")
 const inicioYInput = document.getElementById("inicioY")
+
+inicioXInput.value = playerProps.posX
+inicioYInput.value = playerProps.posY
 
 //funciones para el evento de cambiar de posicion a player
 const changePosX = (e) => {
@@ -17,3 +20,12 @@ const changePosY = (e) => {
 // //draw() sin comenzar el loop, este solo inicia si le doy al boton comenzar animacion
 inicioXInput.addEventListener('input', changePosX)
 inicioYInput.addEventListener('input', changePosY)
+
+//COMENTARIOS
+/*
+ver si se puede refactorizar el tema de que reciba por parametro y no por import player, animacionCorriendo y draw
+ver si se puede recibir por parametro los inputs
+
+con la posicion inicial de player q esta en playerProps le doy el valor que muestran los input por defecto,
+luego la posicion de player una vez instanciado si es cambiada por los inputs.
+*/
