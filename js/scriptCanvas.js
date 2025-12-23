@@ -1,5 +1,5 @@
 import mostrarCuadricula from "../UI/cuadricula.js"
-import { keys } from "../modulos_js/controles.js"
+import moverPlayer from "../modulos_js/controles.js"
 import Rectangulo from "../modulos_js/escenario.js"
 import Player from "../modulos_js/player.js"
 import { mostrarFPS, mostrarPosRect } from "../UI/indicadores.js"
@@ -8,7 +8,6 @@ const canvas1 = document.getElementById("canvas1")
 const ctx1 = canvas1.getContext("2d")
 const body = document.body
 const switchAnimacionBtn = document.getElementById("switchAnimacionBtn")
-const mostrarCuadriculaBtn = document.getElementById("mostrarCuadriculaBtn")
 const inicioXInput = document.getElementById("inicioX")
 const inicioYInput = document.getElementById("inicioY")
 const inicioX = parseFloat(inicioXInput.value)
@@ -29,8 +28,7 @@ const crearRect = (props) => {
 const rects = rectsProps.map(r => crearRect(r))
 const player = new Player(playerProps)
 
-let FPS = 0 //pasar a archivo UI
-let keyPressed = "w" //variable para poder guardar el caracter de la key presionada en el evento y pasarla a player con [] y usar la funcion de movimiento
+let FPS = 0 //tiene q estar en este para poder actualizarlo y pasarlo a la funcion q los muestra
 let myReq;//guardo el id del ultimo frame q se va a usar para cancelar la animacion pasandoselo a cancelAnimationFrame en terminarLoop
 let animacionCorriendo = false //flag para arrancar o terminar el loop draw inicia el false y cuando se cambia con el boton ejecuta draw() en switchLoop
 
@@ -44,10 +42,10 @@ const dibujarRectangulos = () => {
     }
 }
 
+//comentarios de draw() estan al final del archivo
 const draw = () => {
     FPS++
-    //los get de player o de los rectangulos se utilizan sin ejecutar con () como si fueran propiedades no metodos
-    //hacer objetos con las propiedades q se van a mostrar y pasar como funcion creadora a archivo UI
+
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
     
     mostrarFPS({contexto:ctx1, FPS, x:599, y:8, ancho:50})
@@ -60,87 +58,32 @@ const draw = () => {
 
     mostrarCuadricula(canvas1, ctx1)
 
-    //teniendo el estado en las keys verifico si es true uso la funcion move correspondiente pasandole el rectangulo q quiero mover
-    //el estado puede usarse para frenar el movimiento si hay colision, si cada tecla tiene el suyo propio se diferencia de moving
-    //q frenaria todos los movimientos, puediendo asi frenar un el movimiento q colisiona y poder usar otro q no esta colisionando
-    //para salir de la colision
-    //entonces el estado de cada tecla dependeria tambien de las colisiones y a cada una le corresponderia una colision en alguno de los
-    //sentidos
-    //por el momento no se necesita el state de las keys pero puede llegar a servir para separar responsabilidades
-    if(keys[keyPressed].state && !keys[keyPressed].onColision(player, rects[1])) {
-        keys[keyPressed].move(player, canvas1)
-    }
+    moverPlayer(player, rects[1], canvas1)
     
-    //probar colisiones descomentando de a uno
-    // if(keyPressed) console.log(keys[keyPressed].onColision(player, rects[1]))
-    
+    if(animacionCorriendo) myReq = window.requestAnimationFrame(draw)
+}
 
-    //permite evitar el loop de draw para poder correrlo por fuera de requestAnimationFrame
-    //y poder dibujar el 1 frame o dibujar el frame con la posicion cambiada de player
-    //cuando no esta corriendo la animacion
+draw() //dibuja el primer frame con la posicion por defecto en el value de los input sin entrar en el loop debido a que el flag animacionCorriendo esta en false
+
+//comienza el loop si el flag se puso en true al presionar el boton
+const switchAnimacion = () => {
     if(animacionCorriendo) {
-        myReq = window.requestAnimationFrame(draw)
+        draw()
     }
-}
-
-draw() //dibuja el primer frame con la posicion por defecto en el value de los input
-
-const terminarLoop = (e) => {
-    window.cancelAnimationFrame(myReq)
-    switchAnimacionBtn.innerText = 'comenzar animacion'
-    animacionCorriendo = false
-}
-const iniciarLoop = (e) => {
-    animacionCorriendo = true
-    switchAnimacionBtn.innerText = 'terminar animacion'
-    draw()
+    else {
+        window.cancelAnimationFrame(myReq)
+    }
 }
 
 const switchLoop = (e) => {
-    if(animacionCorriendo) {
-        terminarLoop()
-    }
-    else {
-        iniciarLoop()
-    }
+    switchAnimacionBtn.innerText = animacionCorriendo ? 'comenzar animacion' : 'terminar animacion'
+    animacionCorriendo = !animacionCorriendo
+    switchAnimacion()
 }
 
-//uso directamente el objeto keys para ver si la letra presionada es wasd y si es guardo el caracter en keyPressed, cambio el estado
-//de la letra en keys a true y seteo moving en true
-const mover = (e) => {
-    if(keys[e.key]) {
-        keyPressed = e.key
-        keys[e.key].state = true
-    }
-}
-
-//cuando suelto la tecla verifico que sea de una de las keys y cambio el estado de la misma a false junto con moving
-const frenar = (e) => {
-    if(keys[e.key]) {
-        keys[e.key].state = false
-    }
-        
-}
-
-//funciones para el evento de cambiar de posicion a player
-const changePosX = (e) => {
-    player.posX = parseFloat(e.target.value)
-    if(!animacionCorriendo) draw()
-}
-const changePosY = (e) => {
-    player.posY = parseFloat(e.target.value)
-    if(!animacionCorriendo) draw()
-}
-
-window.addEventListener('keydown', mover)
-window.addEventListener('keyup', frenar)
 switchAnimacionBtn.addEventListener('click', switchLoop)
 
-//permite cambiar la posicion inicial de player en x e y con los inputs y dibujarla con
-//draw() sin comenzar el loop, este solo inicia si le doy al boton comenzar animacion
-inicioXInput.addEventListener('input', changePosX)
-inicioYInput.addEventListener('input', changePosY)
-
+export {animacionCorriendo, player, draw}
 
 //CORRECCIONES
 //--
@@ -176,3 +119,39 @@ inicioYInput.addEventListener('input', changePosY)
 //hacer una clase rectangulo q va a permitir agregar mas funcionalidad al player y escenario 
 //a la que le paso los minimos valores de representacion y tienen las
 //funciones para posicionarse y colisionar -> hecho
+
+//COMENTARIOS EN DRAW()
+// const draw = () => {
+//     FPS++
+//     //los get de player o de los rectangulos se utilizan sin ejecutar con () como si fueran propiedades no metodos
+//     //hacer objetos con las propiedades q se van a mostrar y pasar como funcion creadora a archivo UI
+//     ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
+    
+//     mostrarFPS({contexto:ctx1, FPS, x:599, y:8, ancho:50})
+//     mostrarPosRect({contexto:ctx1, rect:player, x:1, y:8, ancho:120})
+//     mostrarPosRect({contexto:ctx1, rect:rects[1], x:150, y:8, ancho:120})
+    
+//     dibujarRectangulo(player)
+    
+//     dibujarRectangulos()
+
+//     mostrarCuadricula(canvas1, ctx1)
+
+//     moverPlayer(player, rects[1], canvas1)
+//     //teniendo el estado en las keys verifico si es true uso la funcion move correspondiente pasandole el rectangulo q quiero mover
+//     //el estado puede usarse para frenar el movimiento si hay colision, si cada tecla tiene el suyo propio se diferencia de moving
+//     //q frenaria todos los movimientos, puediendo asi frenar un el movimiento q colisiona y poder usar otro q no esta colisionando
+//     //para salir de la colision
+//     //entonces el estado de cada tecla dependeria tambien de las colisiones y a cada una le corresponderia una colision en alguno de los
+//     //sentidos
+//     //por el momento no se necesita el state de las keys pero puede llegar a servir para separar responsabilidades
+    
+//     //probar colisiones descomentando de a uno
+//     // if(keyPressed) console.log(keys[keyPressed].onColision(player, rects[1]))
+    
+    
+//     if(animacionCorriendo) myReq = window.requestAnimationFrame(draw)
+//     //permite evitar el loop de draw para poder correrlo por fuera de requestAnimationFrame
+//     //y poder dibujar el 1 frame o dibujar el frame con la posicion cambiada de player
+//     //cuando no esta corriendo la animacion
+// }
