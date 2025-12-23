@@ -23,8 +23,6 @@ const dibujarCuadricula = (distX, distY, canvas, contexto) => {
     }
 }
 
-
-
 //el if q permitia dibujar la cuadricula en draw se pone dentro de mostrarCuadricula asi el flag controla si se ejecuta el codigo dentro
 //cuando ocurre el evento del boton
 
@@ -67,6 +65,11 @@ la funcion flipSiNoX usada dentro del for sirve para dar vuelta los argumentos d
 devolviendo un objeto donde se intercambian los values segun si la posicion x es cero o no.
 A su vez se utiliza antes de for por fuera para obtener un objeto con los values de ancho y alto de canvas en un orden u otro segun la misma condicion
 y la 1er propiedad del resultado se utiliza como argumento del for mientras q la 2da sirve como argumento de si misma al calcular el orden de los 
-parametros de lineTo. 
+parametros de lineTo.
+
+!!!Aclaracion
+a pesar del refactor de mostrarCuadricula, resulta mas legible implementado con 2 for.
+Tambien podria implementarse con un for y una varible q diga si es vertical o no y ahi decidir como se pasan los argumentos de moveTo y lineTo y
+tambien pasar al for los argumentos necesarios segun esta.
 
 */
