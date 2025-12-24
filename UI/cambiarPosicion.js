@@ -1,4 +1,5 @@
-import { player, animacionCorriendo, draw, playerProps} from "../js/scriptCanvas"
+import { animacionCorriendo, draw} from "../js/scriptCanvas.js"
+import { player, playerProps } from "../entidades/index.js"
 
 const inicioXInput = document.getElementById("inicioX")
 const inicioYInput = document.getElementById("inicioY")

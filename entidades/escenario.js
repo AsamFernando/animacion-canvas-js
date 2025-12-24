@@ -1,4 +1,4 @@
-class Rectangulo {
+export class Rectangulo {
     constructor ({id, posX, posY, ancho, alto}) {
         this.id = id;
         this.posX = posX;
@@ -31,8 +31,6 @@ class Rectangulo {
         return this.posYf == canvas.height
     }
 }
-
-export default Rectangulo;
 
 //COMENTARIOS
 //Clase para crear los rectangulos del escenario

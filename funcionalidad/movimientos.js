@@ -8,14 +8,12 @@ const maxPos = (final, posicion, velocidad) =>  {
 
 //separadas funciones de movimiento con control para no pasarse del canvas
 //los get de player o de los rectangulos se utilizan sin ejecutar con ()
-const moves = {
+export const moves = {
     up(player, canvas) {if(!player.inicioY) player.posY = minPos(0, player.posY, player.velocidad)},
     down(player, canvas) {if(!player.finY(canvas)) player.posY = maxPos(canvas.height - player.alto, player.posY, player.velocidad)}, 
     left(player, canvas) {if(!player.inicioX) player.posX = minPos(0, player.posX, player.velocidad)},
     right(player, canvas) {if(!player.finX(canvas)) player.posX = maxPos(canvas.width - player.ancho, player.posX, player.velocidad)}, 
 }
-
-export {moves}
 
 //COMENTARIOS
 /*

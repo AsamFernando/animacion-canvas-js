@@ -1,5 +1,5 @@
 import { colisionW, colisionA, colisionS, colisionD } from "./colisiones.js"
-import {moves} from "./movimientos.js"
+import { moves } from "./movimientos.js"
 
 //las keys se guardan en keyPressed cuando sucede el evento keydown, luego se utiliza para
 //traer de keys a draw las propiedades de la key presionada y ejecutar segun la condicion
@@ -41,7 +41,7 @@ const frenar = (e) => {
     //probar colisiones descomentando de a uno
     // if(keyPressed) console.log(keys[keyPressed].onColision(player, rects[1]))
 
-const moverPlayer = (player, rect, canvas) => {
+export const moverPlayer = (player, rect, canvas) => {
     if(keys[keyPressed].state && !keys[keyPressed].onColision(player, rect)) {
         keys[keyPressed].move(player, canvas)
     }
@@ -49,5 +49,3 @@ const moverPlayer = (player, rect, canvas) => {
 
 window.addEventListener('keydown', mover)
 window.addEventListener('keyup', frenar)
-
-export default moverPlayer

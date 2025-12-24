@@ -40,20 +40,18 @@ const estaEnRangoH = (player, rect) => {
 //junto la condicion de rango y de colision para frenar el dibujado en draw de player
 //podria usarse para solo cambiar el estado y q dependeria de si fue presionada la key y de la colision
 //y el dibujado solo dependeria del estado de la key presionada
-const colisionW = (player, rect) => {
+export const colisionW = (player, rect) => {
     return colisionTop(player, rect) && estaEnRangoV(player, rect)
 }
-const colisionS = (player, rect) => {
+export const colisionS = (player, rect) => {
     return colisionBottom(player, rect) && estaEnRangoV(player, rect)
 }
-const colisionA = (player, rect) => {
+export const colisionA = (player, rect) => {
     return colisionIzq(player, rect) && estaEnRangoH(player, rect)
 }
-const colisionD = (player, rect) => {
+export const colisionD = (player, rect) => {
     return colisionDer(player, rect) && estaEnRangoH(player, rect)
 }
-
-export {colisionW, colisionA, colisionS, colisionD}
 
 //CORRECCIONES
 /*

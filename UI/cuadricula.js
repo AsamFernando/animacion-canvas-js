@@ -17,7 +17,7 @@ const dibujarCuadricula = (distX, distY, canvas, contexto) => {
     }
 }
 
-const mostrarCuadricula = (canvas, contexto) => {
+export const mostrarCuadricula = (canvas, contexto) => {
     if(showCuadricula) {
         contexto.beginPath();
 
@@ -35,8 +35,6 @@ const switchCuadricula = (e) => {
 }
 
 mostrarCuadriculaBtn.addEventListener('click', switchCuadricula)
-
-export default mostrarCuadricula
 
 //CAMBIOS
 //refactorizar los for en mostrarCuadricula -> hecho

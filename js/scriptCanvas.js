@@ -1,32 +1,16 @@
-import mostrarCuadricula from "../UI/cuadricula.js"
-import moverPlayer from "../modulos_js/controles.js"
-import Rectangulo from "../modulos_js/escenario.js"
-import Player from "../modulos_js/player.js"
-import { mostrarFPS, mostrarPosRect } from "../UI/indicadores.js"
+import { mostrarCuadricula, mostrarFPS, mostrarPosRect } from "../UI/index.js"
+import { moverPlayer } from "../funcionalidad/index.js"
+import { player, rects } from "../entidades/index.js"
 
 const canvas1 = document.getElementById("canvas1")
 const ctx1 = canvas1.getContext("2d")
 const body = document.body
 const switchAnimacionBtn = document.getElementById("switchAnimacionBtn")
 
-const rectsProps = [
-    {id:'rect1', posX:0, posY:250, ancho:125, alto:50},
-    {id:'rect2', posX:175, posY:225, ancho:125, alto:45},
-    {id:'rect3', posX:350, posY:200, ancho:125, alto:25},
-    {id:'rect4', posX:525, posY:175, ancho:125, alto:15}
-]
-const playerProps = {id:'player1', posX:20, posY:20, ancho:10, alto:10, velocidad:5}
-
-const crearRect = (props) => {
-    return new Rectangulo(props)
-}
-
-const rects = rectsProps.map(r => crearRect(r))
-const player = new Player(playerProps)
-
 let FPS = 0 //tiene q estar en este para poder actualizarlo y pasarlo a la funcion q los muestra
 let myReq;//guardo el id del ultimo frame q se va a usar para cancelar la animacion pasandoselo a cancelAnimationFrame en terminarLoop
-let animacionCorriendo = false //flag para arrancar o terminar el loop draw inicia el false y cuando se cambia con el boton ejecuta draw() en switchLoop
+
+export let animacionCorriendo = false //flag para arrancar o terminar el loop draw inicia el false y cuando se cambia con el boton ejecuta draw() en switchLoop
 
 const dibujarRectangulo = ({posX, posY, ancho, alto}) => {
     ctx1.fillRect(posX, posY, ancho, alto)
@@ -39,7 +23,7 @@ const dibujarRectangulos = () => {
 }
 
 //comentarios de draw() estan al final del archivo
-const draw = () => {
+export const draw = () => {
     FPS++
 
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
@@ -79,8 +63,6 @@ const switchLoop = (e) => {
 
 switchAnimacionBtn.addEventListener('click', switchLoop)
 
-export {animacionCorriendo, player, draw, playerProps}
-
 //CORRECCIONES
 //--
 
@@ -106,6 +88,7 @@ export {animacionCorriendo, player, draw, playerProps}
 //equivalente en el canvas
 //por el momento los rectangulos son multiplos de 5 para acertar colisiones por posicion de x e y
 //ver flujo de estudio con comentarios ramas e historial de ramas y commits
+//poner en archivo a parte el player los rects y la creacion de entidades
 
 //COMPLETADOS
 //incorporar colisiones con otros rectangulo -> hecho
@@ -115,6 +98,10 @@ export {animacionCorriendo, player, draw, playerProps}
 //hacer una clase rectangulo q va a permitir agregar mas funcionalidad al player y escenario 
 //a la que le paso los minimos valores de representacion y tienen las
 //funciones para posicionarse y colisionar -> hecho
+
+//COMENTARIOS GRAL
+// en js modules no se usan los index igual que con vite, solo especificando la carpeta q contiene el index, porque el navegador no lo encuentra,
+//hay q especificar index.js para poder tomar las exportaciones q necesito del objeto q las junta en index
 
 //COMENTARIOS EN DRAW()
 // const draw = () => {
