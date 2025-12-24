@@ -1,4 +1,8 @@
+### Bugs
+- [x] FIX MOMENTANEO hacer q los inputs solo admitan valores multiplos de la velocidad (explicacion en cambiarPosicion.js)
+
 ## Proximos Cambios
+- [ ] hacer q la velocidad en q se ve q player se mueve por pantalla no dependa de restar o sumar a su posicion una variable velocidad sino q siempre avance de 1 en 1 para evitar q las posiciones desde donde arranca q pueden ser cambiadas por los inputs, y las proximas q tome dejen de ser multiplos de la velocidad q se resta a la posicion, lo cual rompe las colisiones de momento
 - [ ] refactorizar las funciones y eventos y usar objetos donde se necesite
 - [ ] evitar mucho uso de if else
 - [ ] hacer que la velocidad sea constante sin depender de refresh rate del monitor, con timestamp
@@ -17,6 +21,7 @@
 - [ ] ver flujo de estudio con comentarios ramas e historial de ramas y commits
 - [ ] ver si conviene separa las funciones para dibujar en canvas y las q ejecutan o cancelan la animacion
 - [ ] juntar comentarios generales del codigo o comportamiento de js y dom/navegador/node etc y separar de los que son explicando el codigo
+
 
 ### Completados
 - [x] incorporar colisiones con otros rectangulo -> hecho
