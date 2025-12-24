@@ -1,3 +1,6 @@
+const inicioXInput = document.getElementById("inicioX")
+const inicioYInput = document.getElementById("inicioY")
+
 export const playerProps = {id:'player1', posX:20, posY:20, ancho:10, alto:10, velocidad:5}
 
 export const rectsProps = [

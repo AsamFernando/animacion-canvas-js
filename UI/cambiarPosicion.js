@@ -4,13 +4,15 @@ import { player, playerProps } from "../entidades/index.js"
 const inicioXInput = document.getElementById("inicioX")
 const inicioYInput = document.getElementById("inicioY")
 
-inicioXInput.value = playerProps.posX
-inicioYInput.value = playerProps.posY
+// inicioXInput.value = playerProps.posX
+// inicioYInput.value = playerProps.posY
 
 //funciones para el evento de cambiar de posicion a player
 const changePosX = (e) => {
-    player.posX = parseFloat(e.target.value)
-    if(!animacionCorriendo) draw()
+    console.log(animacionCorriendo)
+    console.log(e.target.value)
+    // player.posX = parseFloat(e.target.value)
+    // if(!animacionCorriendo) draw()
 }
 const changePosY = (e) => {
     player.posY = parseFloat(e.target.value)

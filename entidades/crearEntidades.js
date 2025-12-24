@@ -6,8 +6,5 @@ const crearRect = (props) => {
     return new Rectangulo(props)
 }
 
-const crearRects = () => rectsProps.map(p => crearRect(p))
-const crearPlayer = () => new Player(playerProps)
-
-export const player = crearPlayer()
-export const rects = crearRects()
+export const rects = rectsProps.map(p => crearRect(p))
+export const player = new Player(playerProps)
