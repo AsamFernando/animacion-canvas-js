@@ -23,13 +23,24 @@ const dibujarRectangulos = () => {
     }
 }
 
-//comentarios de draw() estan al final del archivo
-export const draw = () => {
-    FPS++
+let start;
 
-    ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
+//comentarios de draw() estan al final del archivo
+export const draw = (timestamp) => {
+    FPS++
     
-    mostrarFPS({contexto:ctx1, FPS, x:599, y:8, ancho:50})
+    ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
+
+    if(start == undefined) start = timestamp
+
+    let timelapse = timestamp - start
+    let speed = 300
+    let x = (speed / 1000) * timelapse
+
+    console.log(x)
+    // console.log(timestamp)
+    
+    // mostrarFPS({contexto:ctx1, FPS, x:599, y:8, ancho:50})
     mostrarPosRect({contexto:ctx1, rect:player, x:1, y:8, ancho:120})
     mostrarPosRect({contexto:ctx1, rect:rects[1], x:150, y:8, ancho:120})
     
@@ -39,7 +50,7 @@ export const draw = () => {
 
     mostrarCuadricula(canvas1, ctx1)
 
-    moverPlayer(player, rects[1], canvas1)
+    moverPlayer(player, rects[1], canvas1) //importar rects directamente a controles
     
     if(animacionCorriendo) myReq = window.requestAnimationFrame(draw)
 }
