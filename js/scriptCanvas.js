@@ -36,7 +36,7 @@ const dibujarFrame = () => {
 let lastTime = 0;
 
 const calcularStep = (timestamp) => {
-    if(!lastTime) lastTime = timestamp
+    if(!lastTime) lastTime = timestamp //como en switchLoop pongo lastTime en 0 siempre q reanudo la animacion guardo el timestamp en lastTime, asi no se producen saltos por tener un lastTime atrasado en la resta
     const delta = timestamp - lastTime //el 1er frame da cero, luego guardo timestamp pero sirve para los proximo frames no el 1ro
     console.log(Math.floor(delta))
     lastTime = timestamp //es para q al restar en el proximo frame el step me de 16.67 en vez de 33.34 asi cuando calculo el step siempre tengo la misma cantidad de pixeles para sumar a la posicion
@@ -121,11 +121,14 @@ switchAnimacionBtn.addEventListener('click', switchLoop)
 //     //cuando no esta corriendo la animacion
 // }
 
-/* git commit -m 'implementado desplazamiento dependiente del tiempo y no de la velocidad de frames,
+/*
+EXPLICACION DE DESPLAZAMIENTO EN FUNCION DEL TIEMPO
+implementado desplazamiento dependiente del tiempo y no de la velocidad de frames,
 modificada funcion switchAnimacion para que ejecute draw con requestAnimationFrame y pueda recibir timestamp,
 ya que con draw() quedaba undefined en el primer loop, y se pone lastTime en cero para cuando pregunto
 !lastTime poder asignarle timestamp de nuevo y asi siempre tener actualizado lastTime con el valor del frame
 anterior al que uso en la resta para obtener el valor de ms por frame si no se hace esto, cuando paro la animacion
 con switchLoop y la activo, si estoy manteniendo la tecla de desplazamiento se produce un salto en la posicion
 de player porque recibe el valor de la resta entre un lastTime viejo y el timestap ultimo que es tanto tiempo
-como estuvo frenada la animacion mas grande que este' */
+como estuvo frenada la animacion mas grande que este'
+*/
