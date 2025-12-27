@@ -1,4 +1,4 @@
-export const playerProps = {id:'player1', posX:20, posY:20, ancho:10, alto:10, velocidad:5}
+export const playerProps = {id:'player1', posX:20, posY:20, ancho:10, alto:10, velocidad:300}
 
 export const rectsProps = [
     {id:'rect1', posX:0, posY:250, ancho:125, alto:50},

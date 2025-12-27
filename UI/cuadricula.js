@@ -32,6 +32,7 @@ export const mostrarCuadricula = (canvas, contexto) => {
 const switchCuadricula = (e) => {
     mostrarCuadriculaBtn.innerText = showCuadricula ? 'mostrar cuadricula' : 'ocultar cuadricula'
     showCuadricula = !showCuadricula
+
 }
 
 mostrarCuadriculaBtn.addEventListener('click', switchCuadricula)

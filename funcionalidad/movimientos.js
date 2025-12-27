@@ -1,18 +1,26 @@
 //funciones q usan Math.min y max para poder usar cualquier velocidad sin pasarme del canvas
-const minPos = (inicio, posicion, velocidad) =>  {
-    return Math.max(inicio, posicion - velocidad)
+// const minPos = (inicio, posicion) =>  {
+//     return Math.max(inicio, posicion)
+// }
+// const maxPos = (final, posicion) =>  {
+//     return Math.min(final, posicion)
+// }
+const minPos = (inicio, posicion, step) =>  {
+    return Math.max(inicio, posicion - step)
 }
-const maxPos = (final, posicion, velocidad) =>  {
-    return Math.min(final, posicion + velocidad)
+const maxPos = (final, posicion, step) =>  {
+    return Math.min(final, posicion + step)
 }
 
 //separadas funciones de movimiento con control para no pasarse del canvas
 //los get de player o de los rectangulos se utilizan sin ejecutar con ()
+
+//Ejecutar draw solo se oprime una tecla de desplazamiento para siempre obtener el timelapse desde cero 
 export const moves = {
-    up(player, canvas) {if(!player.inicioY) player.posY = minPos(0, player.posY, player.velocidad)},
-    down(player, canvas) {if(!player.finY(canvas)) player.posY = maxPos(canvas.height - player.alto, player.posY, player.velocidad)}, 
-    left(player, canvas) {if(!player.inicioX) player.posX = minPos(0, player.posX, player.velocidad)},
-    right(player, canvas) {if(!player.finX(canvas)) player.posX = maxPos(canvas.width - player.ancho, player.posX, player.velocidad)}, 
+    up(player, step, canvas) {if(!player.inicioY) player.posY = minPos(0, player.posY, step)},
+    down(player, step, canvas) {if(!player.finY(canvas)) player.posY = maxPos(canvas.height - player.alto, player.posY, step)}, 
+    left(player, step, canvas) {if(!player.inicioX) player.posX = minPos(0, player.posX, step)},
+    right(player, step, canvas) {if(!player.finX(canvas)) player.posX = maxPos(canvas.width - player.ancho, player.posX, step)}, 
 }
 
 //COMENTARIOS

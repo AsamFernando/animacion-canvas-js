@@ -23,44 +23,51 @@ const dibujarRectangulos = () => {
     }
 }
 
-let start;
 
-//comentarios de draw() estan al final del archivo
-export const draw = (timestamp) => {
-    FPS++
-    
-    ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
-
-    if(start == undefined) start = timestamp
-
-    let timelapse = timestamp - start
-    let speed = 300
-    let x = (speed / 1000) * timelapse
-
-    console.log(x)
-    // console.log(timestamp)
-    
-    // mostrarFPS({contexto:ctx1, FPS, x:599, y:8, ancho:50})
+const dibujarFrame = () => {
+    mostrarFPS({contexto:ctx1, FPS, x:599, y:8, ancho:50})
     mostrarPosRect({contexto:ctx1, rect:player, x:1, y:8, ancho:120})
     mostrarPosRect({contexto:ctx1, rect:rects[1], x:150, y:8, ancho:120})
     
     dibujarRectangulo(player)
     
     dibujarRectangulos()
+}
+let lastTime = 0;
+
+const calcularStep = (timestamp) => {
+    if(!lastTime) lastTime = timestamp
+    const delta = timestamp - lastTime //el 1er frame da cero, luego guardo timestamp pero sirve para los proximo frames no el 1ro
+    console.log(Math.floor(delta))
+    lastTime = timestamp //es para q al restar en el proximo frame el step me de 16.67 en vez de 33.34 asi cuando calculo el step siempre tengo la misma cantidad de pixeles para sumar a la posicion
+    return Math.ceil((player.velocidad / 1000) * delta)
+}
+
+//comentarios de draw() estan al final del archivo
+export const draw = (timestamp) => {
+    FPS++
+    
+    ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
+    
+    dibujarFrame()
 
     mostrarCuadricula(canvas1, ctx1)
 
-    moverPlayer(player, rects[1], canvas1) //importar rects directamente a controles
+    let step = calcularStep(timestamp)
+    // console.log(step)
+    
+    moverPlayer(player, step, canvas1) //importar rects directamente a controles
     
     if(animacionCorriendo) myReq = window.requestAnimationFrame(draw)
 }
 
-draw() //dibuja el primer frame con la posicion por defecto en el value de los input sin entrar en el loop debido a que el flag animacionCorriendo esta en false
+dibujarFrame() //dibuja el primer frame con la posicion por defecto en el value de los input sin entrar en el loop debido a que el flag animacionCorriendo esta en false
 
 //comienza el loop si el flag se puso en true al presionar el boton
 const switchAnimacion = () => {
     if(animacionCorriendo) {
-        draw()
+        lastTime = 0
+        myReq = window.requestAnimationFrame(draw)
     }
     else {
         window.cancelAnimationFrame(myReq)
@@ -113,3 +120,12 @@ switchAnimacionBtn.addEventListener('click', switchLoop)
 //     //y poder dibujar el 1 frame o dibujar el frame con la posicion cambiada de player
 //     //cuando no esta corriendo la animacion
 // }
+
+/* git commit -m 'implementado desplazamiento dependiente del tiempo y no de la velocidad de frames,
+modificada funcion switchAnimacion para que ejecute draw con requestAnimationFrame y pueda recibir timestamp,
+ya que con draw() quedaba undefined en el primer loop, y se pone lastTime en cero para cuando pregunto
+!lastTime poder asignarle timestamp de nuevo y asi siempre tener actualizado lastTime con el valor del frame
+anterior al que uso en la resta para obtener el valor de ms por frame si no se hace esto, cuando paro la animacion
+con switchLoop y la activo, si estoy manteniendo la tecla de desplazamiento se produce un salto en la posicion
+de player porque recibe el valor de la resta entre un lastTime viejo y el timestap ultimo que es tanto tiempo
+como estuvo frenada la animacion mas grande que este' */

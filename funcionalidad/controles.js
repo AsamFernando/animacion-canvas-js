@@ -1,3 +1,4 @@
+import { rects } from "../entidades/crearEntidades.js"
 import { colisionW, colisionA, colisionS, colisionD } from "./colisiones.js"
 import { moves } from "./movimientos.js"
 
@@ -41,9 +42,9 @@ const frenar = (e) => {
     //probar colisiones descomentando de a uno
     // if(keyPressed) console.log(keys[keyPressed].onColision(player, rects[1]))
 
-export const moverPlayer = (player, rect, canvas) => {
-    if(keys[keyPressed].state && !keys[keyPressed].onColision(player, rect)) {
-        keys[keyPressed].move(player, canvas)
+export const moverPlayer = (player, step, canvas) => {
+    if(keys[keyPressed].state && !keys[keyPressed].onColision(player, rects[1])) {
+        keys[keyPressed].move(player, step, canvas)
     }
 }
 
