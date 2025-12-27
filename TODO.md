@@ -3,7 +3,6 @@
 
 ## Proximos Cambios
 - [ ] hacer q la velocidad en q se ve q player se mueve por pantalla no dependa de restar o sumar a su posicion una variable velocidad sino q siempre avance de 1 en 1 para evitar q las posiciones desde donde arranca q pueden ser cambiadas por los inputs, y las proximas q tome dejen de ser multiplos de la velocidad q se resta a la posicion, lo cual rompe las colisiones de momento
-- [ ] hacer que la velocidad sea constante sin depender de refresh rate del monitor, con timestamp
 - [ ] incorporar aceleracion al rectangulo
 - [ ] incorporar gravedad y su aceleracion
 - [ ] que el rectangulo pueda pegar un salto presionando la w o barra espaciadora
@@ -12,8 +11,7 @@
 - [ ] poder colisionar con cualquier rectangulo del listado
 - [ ] incorporar colisiones con objetos distintos de rectangulos, por ej circulo o rombo
 - [ ] agregar una rama con todos los comentarios del codigo
-- [ ] hacer una clase rectagulo o forma que reciba la cantidad de rects o huecos y cree
-- [ ] calculando los valores de ancho alto y tamaño en base a las cantidades y los ubique de manera equivalente en el canvas
+- [ ] hacer una clase rectagulo o forma que reciba la cantidad de rects o huecos y cree calculando los valores de ancho alto y tamaño en base a las cantidades y los ubique de manera equivalente en el canvas
 - [ ] ver flujo de estudio con comentarios ramas e historial de ramas y commits
 - [ ] juntar comentarios generales del codigo o comportamiento de js y dom/navegador/node etc y separar de los que son explicando el codigo
 
@@ -27,6 +25,7 @@
 - [ ] ver si conviene separa las funciones para dibujar en canvas y las q ejecutan o cancelan la animacion
 
 ### Completados
+- [x] hacer que la velocidad sea constante sin depender de refresh rate del monitor, con timestamp
 - [x] FIX MOMENTANEO hacer q los inputs solo admitan valores multiplos de la velocidad (explicacion en cambiarPosicion.js)
 - [x] incorporar colisiones con otros rectangulo -> hecho
 - [x] agregar inputs para dar una posicion inicial -> hecho
