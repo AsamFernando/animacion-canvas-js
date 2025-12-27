@@ -16,7 +16,7 @@
 - [ ] juntar comentarios generales del codigo o comportamiento de js y dom/navegador/node etc y separar de los que son explicando el codigo
 
 ### Correcciones
-- [ ] corregir colisiones en base a desplazamiento en funcion del tiempo con Math.min y max
+- [ ] corregir colisiones en base a desplazamiento en funcion del tiempo con Math.min y max, ver si se puede hacer con fixed timestep e interpolacion
 - [ ] ver como mergear mejor las ramas con comentario con las no comentadas como dev-comentado con dev para luego pasar a main q no tiene comentarios
 - [ ] refactorizar todas las asignaciones y variables en cambiarPosicion.js
 - [ ] refactorizar las funciones y eventos y usar objetos donde se necesite
