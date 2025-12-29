@@ -15,35 +15,20 @@ inicioXInput.value = player.posX
 inicioYInput.value = player.posY
 inicioXInput.step = step
 inicioYInput.step = step
-inicioXInput.max = canvas1.width
-inicioYInput.max = canvas1.height
+inicioXInput.max = canvas1.width - player.ancho //en input se muestar 640 que es el maximo valor q va tomar desde el input posX
+inicioYInput.max = canvas1.height - player.alto //en input se muestar 290 que es el maximo valor q va tomar desde el input posY
 inicioXInput.min = 0
 inicioYInput.min = 0
-
-
-const minPos = (inicio, posicion, step) =>  {
-    return Math.max(inicio, posicion - step)
-}
-const maxPos = (final, posicion, step) =>  {
-    return Math.min(final, posicion + step)
-}
-
-//  up(player, step, canvas) {if(!player.inicioY) player.posY = minPos(0, player.posY, step)},
-//  down(player, step, canvas) {if(!player.finY(canvas)) player.posY = maxPos(canvas.height - player.alto, player.posY, step)}, 
-//  left(player, step, canvas) {if(!player.inicioX) player.posX = minPos(0, player.posX, step)},
-//  right(player, step, canvas) {if(!player.finX(canvas)) player.posX = maxPos(canvas.width - player.ancho, player.posX, step)},
 
 //funciones para el evento de cambiar de posicion a player
 const changePosX = (e) => {
     spanInicioX.textContent = e.target.value
-    player.posX = Math.min(e.target.value, canvas1.width - player.ancho)
-    // player.posX = parseFloat(e.target.value)
+    player.posX = parseFloat(e.target.value)
     if(!animacionCorriendo) render()
 }
 const changePosY = (e) => {
     spanInicioY.textContent = e.target.value
-    player.posY = Math.min(e.target.value, canvas1.height - player.alto)
-    // player.posY = parseFloat(e.target.value)
+    player.posY = parseFloat(e.target.value)
     if(!animacionCorriendo) render()
 }
 
