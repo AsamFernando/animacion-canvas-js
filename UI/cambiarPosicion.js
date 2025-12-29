@@ -1,5 +1,7 @@
-import { animacionCorriendo, draw} from "../js/scriptCanvas.js"
+import { animacionCorriendo, draw, render} from "../js/scriptCanvas.js"
 import { player } from "../entidades/index.js"
+import { fixed_dt } from "../js/constantes.js"
+import { step } from "../js/systems.js"
 
 const inicioXInput = document.getElementById("inicioX")
 const inicioYInput = document.getElementById("inicioY")
@@ -11,23 +13,38 @@ spanInicioX.textContent = inicioXInput.value
 spanInicioY.textContent = inicioYInput.value
 inicioXInput.value = player.posX
 inicioYInput.value = player.posY
-inicioXInput.step = player.velocidad
-inicioYInput.step = player.velocidad
+inicioXInput.step = step
+inicioYInput.step = step
 inicioXInput.max = canvas1.width
 inicioYInput.max = canvas1.height
 inicioXInput.min = 0
 inicioYInput.min = 0
 
+
+const minPos = (inicio, posicion, step) =>  {
+    return Math.max(inicio, posicion - step)
+}
+const maxPos = (final, posicion, step) =>  {
+    return Math.min(final, posicion + step)
+}
+
+//  up(player, step, canvas) {if(!player.inicioY) player.posY = minPos(0, player.posY, step)},
+//  down(player, step, canvas) {if(!player.finY(canvas)) player.posY = maxPos(canvas.height - player.alto, player.posY, step)}, 
+//  left(player, step, canvas) {if(!player.inicioX) player.posX = minPos(0, player.posX, step)},
+//  right(player, step, canvas) {if(!player.finX(canvas)) player.posX = maxPos(canvas.width - player.ancho, player.posX, step)},
+
 //funciones para el evento de cambiar de posicion a player
 const changePosX = (e) => {
     spanInicioX.textContent = e.target.value
-    player.posX = parseFloat(e.target.value)
-    if(!animacionCorriendo) draw()
-    }
+    player.posX = Math.min(e.target.value, canvas1.width - player.ancho)
+    // player.posX = parseFloat(e.target.value)
+    if(!animacionCorriendo) render()
+}
 const changePosY = (e) => {
     spanInicioY.textContent = e.target.value
-    player.posY = parseFloat(e.target.value)
-    if(!animacionCorriendo) draw()
+    player.posY = Math.min(e.target.value, canvas1.height - player.alto)
+    // player.posY = parseFloat(e.target.value)
+    if(!animacionCorriendo) render()
 }
 
 // //permite cambiar la posicion inicial de player en x e y con los inputs y dibujarla con
