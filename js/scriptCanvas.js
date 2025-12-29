@@ -32,6 +32,8 @@ export const render = (frameTime) => {
     mostrarFPS({contexto:ctx1, frameTime, x:599, y:8, ancho:50})
     mostrarPosRect({contexto:ctx1, rect:player, x:1, y:8, ancho:120})
     mostrarPosRect({contexto:ctx1, rect:rects[1], x:150, y:8, ancho:120})
+
+    mostrarCuadricula(canvas1, ctx1)
     
     dibujarRectangulo(player)
     
@@ -78,8 +80,6 @@ export const draw = (timestamp) => {
     FPS++
 
     let deltaTime = calcularDeltaTime(timestamp) //calculo intervalo de tiempo entre frames
-    
-    mostrarCuadricula(canvas1, ctx1)
     
     update(deltaTime) //separadas logica de cambios en valores de las figuras usados para dibujar en canvas
 
