@@ -2,6 +2,7 @@
 - No hay de momento
 
 ## Proximos Cambios
+- [ ] ver si pasar funciones de dibujo en canvas y otras y constantes o vars a archivo constantes.js y systems.js
 - [ ] hacer q la velocidad en q se ve q player se mueve por pantalla no dependa de restar o sumar a su posicion una variable velocidad sino q siempre avance de 1 en 1 para evitar q las posiciones desde donde arranca q pueden ser cambiadas por los inputs, y las proximas q tome dejen de ser multiplos de la velocidad q se resta a la posicion, lo cual rompe las colisiones de momento
 - [ ] incorporar aceleracion al rectangulo
 - [ ] incorporar gravedad y su aceleracion
