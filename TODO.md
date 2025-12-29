@@ -17,7 +17,6 @@
 - [ ] juntar comentarios generales del codigo o comportamiento de js y dom/navegador/node etc y separar de los que son explicando el codigo
 
 ### Correcciones
-- [ ] corregir no pasarse del canvas al desplazar hasta el inicio o final con los inputs
 - [ ] corregir colisiones en base a desplazamiento en funcion del tiempo con Math.min y max, ver si se puede hacer con fixed timestep e interpolacion
 - [ ] ver como mergear mejor las ramas con comentario con las no comentadas como dev-comentado con dev para luego pasar a main q no tiene comentarios
 - [ ] refactorizar todas las asignaciones y variables en cambiarPosicion.js
@@ -27,6 +26,7 @@
 - [ ] por el momento los rectangulos son multiplos de 5 para acertar colisiones por posicion de x e y
 
 ### Completados
+- [x] corregir no pasarse del canvas al desplazar hasta el inicio o final con los inputs
 - [x] separadas funciones para dibujar en canvas y las q ejecutan o cancelan la animacion
 - [x] hacer que la velocidad sea constante sin depender de refresh rate del monitor, con timestamp
 - [x] FIX MOMENTANEO hacer q los inputs solo admitan valores multiplos de la velocidad (explicacion en cambiarPosicion.js)
