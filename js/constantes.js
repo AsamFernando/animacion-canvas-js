@@ -2,4 +2,4 @@
 //y no crear referencias circulares o uso de variables o constantes no inicializadas
 const dts = [16.67, 8.34, 10]
 
-export const fixed_dt = dts[0]
+export const fixed_dt = dts[2]
