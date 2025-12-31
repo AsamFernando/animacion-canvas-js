@@ -1,4 +1,6 @@
-//chequea colision de lado superior de player con lado inferior de rectangulo
+import { step } from "../js/systems.js"
+
+// chequea colision de lado superior de player con lado inferior de rectangulo
 const colisionTop = (player, rect) => {
     let playerTop = player.posY
     let rectBottom = rect.posYf
@@ -32,32 +34,46 @@ const colisionDer = (player, rect) => {
 //esta por encima de la parte superior de rect
 //lo mismo para la parte inferior y los laterales
 
+
+
+const estaEnRangoV = (player, rect) => {
+    // return colisionDer(player, rect) && colisionIzq(player, rect)
+    return player.posXf > rect.posX && player.posX < rect.posXf
+}
+
 const estaEnRangoVS = (player, rect) => {
-    return player.posXf > rect.posX && player.posX < rect.posXf && player.posY < rect.posY
+    // return colisionDer(player, rect) && colisionIzq(player, rect) && player.posYf > rect.posYf
+    return  estaEnRangoV(player, rect) && player.posY < rect.posY
 }
 
 //es igual a hacer colisionDer && colisionIzq, ver lo mismo para los demas rangos
 const estaEnRangoVI = (player, rect) => {
     // return colisionDer(player, rect) && colisionIzq(player, rect) && player.posYf > rect.posYf
-    return player.posXf > rect.posX && player.posX < rect.posXf && player.posYf > rect.posYf
+    return  estaEnRangoV(player, rect) && player.posYf > rect.posYf
 }
 
 //el mismo chequeo se realiza para y yf de player teniendo en cuenta el rango
 //y-yf del rectangulo
+const estaEnRangoH = (player, rect) => {
+    return player.posYf > rect.posY && player.posY < rect.posYf
+}
+
 const estaEnRangoHI = (player, rect) => {
-    return player.posYf > rect.posY && player.posY < rect.posYf && player.posX < rect.posX
+    return estaEnRangoH(player, rect) && player.posX < rect.posX
 }
 const estaEnRangoHD = (player, rect) => {
-    return player.posYf > rect.posY && player.posY < rect.posYf && player.posXf > rect.posXf
+    return estaEnRangoH(player, rect) && player.posXf > rect.posXf
 }
 
 //junto la condicion de rango y de colision para frenar el dibujado en draw de player
 //podria usarse para solo cambiar el estado y q dependeria de si fue presionada la key y de la colision
 //y el dibujado solo dependeria del estado de la key presionada
+
 export const colisionW = (player, rect) => {
     return colisionTop(player, rect) && estaEnRangoVI(player, rect)
 }
 export const colisionS = (player, rect) => {
+    console.log('colision en siguiente paso: ', player.posYf + step >= rect.posY, 'posXf: ', player.posXf, 'step: ', step)
     return colisionBottom(player, rect) && estaEnRangoVS(player, rect)
 }
 export const colisionA = (player, rect) => {
