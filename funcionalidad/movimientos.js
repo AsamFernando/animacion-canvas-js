@@ -20,10 +20,10 @@ const maxPos = (final, posicion, step) =>  {
 //     right(player, rects, canvas) {if(!player.finX(canvas)) player.posX += nextStep(colisionNexStepD, player.posXf, rects[1].posX)}, 
 // }
 export const moves = {
-    up(canvas) {if(!player.inicioY) player.posY -= minPos(0, !estaEnRangoVI(player, rects[1]) ? step : nextStep(player.posY, rects[1].posYf))},
-    down(canvas) {if(!player.finY(canvas)) player.posY += maxPos(canvas.height - player.posYf, !estaEnRangoVS(player, rects[1]) ? step : nextStep(player.posYf, rects[1].posY))}, 
-    left(canvas) {if(!player.inicioX) player.posX -= minPos(0, !estaEnRangoHD(player, rects[1]) ? step : nextStep(player.posX, rects[1].posXf))},
-    right(canvas) {if(!player.finX(canvas)) player.posX += maxPos(0, !estaEnRangoHI(player, rects[1]) ? step : nextStep(player.posXf, rects[1].posX))},
+    up(canvas) {if(!player.inicioY) player.posY = minPos(0, player.posY, !estaEnRangoVI(player, rects[1]) ? step : nextStep(player.posY, rects[1].posYf))},
+    down(canvas) {if(!player.finY(canvas)) player.posY = maxPos(canvas.height - player.posYf, player.posY, !estaEnRangoVS(player, rects[1]) ? step : nextStep(player.posYf, rects[1].posY))}, 
+    left(canvas) {if(!player.inicioX) player.posX = minPos(0, player.posX, !estaEnRangoHD(player, rects[1]) ? step : nextStep(player.posX, rects[1].posXf))},
+    right(canvas) {if(!player.finX(canvas)) player.posX = maxPos(canvas.width - player.posXf, player.posX, !estaEnRangoHI(player, rects[1]) ? step : nextStep(player.posXf, rects[1].posX))},
 }
 
 //COMENTARIOS
