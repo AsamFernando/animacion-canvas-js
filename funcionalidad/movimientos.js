@@ -1,10 +1,7 @@
-//funciones q usan Math.min y max para poder usar cualquier velocidad sin pasarme del canvas
-// const minPos = (inicio, posicion) =>  {
-//     return Math.max(inicio, posicion)
-// }
-// const maxPos = (final, posicion) =>  {
-//     return Math.min(final, posicion)
-// }
+import { player, rects } from "../entidades/crearEntidades.js"
+import { nextStep, step } from "../js/systems.js"
+import { estaEnRangoVS, estaEnRangoVI, estaEnRangoHD, estaEnRangoHI} from "../funcionalidad/colisiones.js"
+
 const minPos = (inicio, posicion, step) =>  {
     return Math.max(inicio, posicion - step)
 }
@@ -16,11 +13,17 @@ const maxPos = (final, posicion, step) =>  {
 //los get de player o de los rectangulos se utilizan sin ejecutar con ()
 
 //Ejecutar draw solo se oprime una tecla de desplazamiento para siempre obtener el timelapse desde cero 
+// export const moves = {
+//     up(player, rects, canvas) {if(!player.inicioY) player.posY += nextStep(colisionNexStepW, player.posY, rects[1].posYf)},
+//     down(player, rects, canvas) {if(!player.finY(canvas)) player.posY += nextStep(colisionNexStepS, player.posYf, rects[1].posY)}, 
+//     left(player, rects, canvas) {if(!player.inicioX) player.posX += nextStep(colisionNexStepA, player.posX, rects[1].posXf)},
+//     right(player, rects, canvas) {if(!player.finX(canvas)) player.posX += nextStep(colisionNexStepD, player.posXf, rects[1].posX)}, 
+// }
 export const moves = {
-    up(player, step, canvas) {if(!player.inicioY) player.posY = minPos(0, player.posY, step)},
-    down(player, step, canvas) {if(!player.finY(canvas)) player.posY = maxPos(canvas.height - player.alto, player.posY, step)}, 
-    left(player, step, canvas) {if(!player.inicioX) player.posX = minPos(0, player.posX, step)},
-    right(player, step, canvas) {if(!player.finX(canvas)) player.posX = maxPos(canvas.width - player.ancho, player.posX, step)}, 
+    up(canvas) {if(!player.inicioY) player.posY -= minPos(0, !estaEnRangoVI(player, rects[1]) ? step : nextStep(player.posY, rects[1].posYf))},
+    down(canvas) {if(!player.finY(canvas)) player.posY += maxPos(canvas.height - player.posYf, !estaEnRangoVS(player, rects[1]) ? step : nextStep(player.posYf, rects[1].posY))}, 
+    left(canvas) {if(!player.inicioX) player.posX -= minPos(0, !estaEnRangoHD(player, rects[1]) ? step : nextStep(player.posX, rects[1].posXf))},
+    right(canvas) {if(!player.finX(canvas)) player.posX += maxPos(0, !estaEnRangoHI(player, rects[1]) ? step : nextStep(player.posXf, rects[1].posX))},
 }
 
 //COMENTARIOS

@@ -1,13 +1,19 @@
-import { rects } from "../entidades/crearEntidades.js"
+import { player, rects } from "../entidades/crearEntidades.js"
 import { colisionW, colisionA, colisionS, colisionD } from "./colisiones.js"
 import { moves } from "./movimientos.js"
 
 //las keys se guardan en keyPressed cuando sucede el evento keydown, luego se utiliza para
 //traer de keys a draw las propiedades de la key presionada y ejecutar segun la condicion
 //actual la funcion de movimiento move
-let keyPressed = "w" //variable para poder guardar el caracter de la key presionada en el evento y pasarla a player con [] y usar la funcion de movimiento
+export let keyPressed = "w" //variable para poder guardar el caracter de la key presionada en el evento y pasarla a player con [] y usar la funcion de movimiento
 
-const keys = {
+// export const keys = {
+//     w:{key:'w', state:false, move:moves.up},
+//     s:{key:'s', state:false, move:moves.down},
+//     a:{key:'a', state:false, move:moves.left},
+//     d:{key:'d', state:false, move:moves.right},
+// }
+export const keys = {
     w:{key:'w', state:false, onColision:colisionW, move:moves.up},
     s:{key:'s', state:false, onColision:colisionS, move:moves.down},
     a:{key:'a', state:false, onColision:colisionA, move:moves.left},
@@ -42,9 +48,10 @@ const frenar = (e) => {
     //probar colisiones descomentando de a uno
     // if(keyPressed) console.log(keys[keyPressed].onColision(player, rects[1]))
 
-export const moverPlayer = (player, step, canvas) => {
+export const moverPlayer = (canvas) => {
+    // if(keys[keyPressed].state && !keys[keyPressed].onColisionNexStep(player, rects[1])) {
     if(keys[keyPressed].state && !keys[keyPressed].onColision(player, rects[1])) {
-        keys[keyPressed].move(player, step, canvas)
+        keys[keyPressed].move(canvas)
     }
 }
 

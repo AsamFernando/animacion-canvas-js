@@ -1,6 +1,5 @@
-import { animacionCorriendo, draw, render} from "../js/scriptCanvas.js"
+import { animacionCorriendo, draw, render } from "../js/scriptCanvas.js"
 import { player } from "../entidades/index.js"
-import { fixed_dt } from "../js/constantes.js"
 import { step } from "../js/systems.js"
 
 const inicioXInput = document.getElementById("inicioX")

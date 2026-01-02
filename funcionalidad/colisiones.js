@@ -1,5 +1,3 @@
-import { step } from "../js/systems.js"
-
 // chequea colision de lado superior de player con lado inferior de rectangulo
 const colisionTop = (player, rect) => {
     let playerTop = player.posY
@@ -34,21 +32,16 @@ const colisionDer = (player, rect) => {
 //esta por encima de la parte superior de rect
 //lo mismo para la parte inferior y los laterales
 
-
-
 const estaEnRangoV = (player, rect) => {
-    // return colisionDer(player, rect) && colisionIzq(player, rect)
     return player.posXf > rect.posX && player.posX < rect.posXf
 }
 
-const estaEnRangoVS = (player, rect) => {
-    // return colisionDer(player, rect) && colisionIzq(player, rect) && player.posYf > rect.posYf
+export const estaEnRangoVS = (player, rect) => {
     return  estaEnRangoV(player, rect) && player.posY < rect.posY
 }
 
 //es igual a hacer colisionDer && colisionIzq, ver lo mismo para los demas rangos
-const estaEnRangoVI = (player, rect) => {
-    // return colisionDer(player, rect) && colisionIzq(player, rect) && player.posYf > rect.posYf
+export const estaEnRangoVI = (player, rect) => {
     return  estaEnRangoV(player, rect) && player.posYf > rect.posYf
 }
 
@@ -58,10 +51,10 @@ const estaEnRangoH = (player, rect) => {
     return player.posYf > rect.posY && player.posY < rect.posYf
 }
 
-const estaEnRangoHI = (player, rect) => {
+export const estaEnRangoHI = (player, rect) => {
     return estaEnRangoH(player, rect) && player.posX < rect.posX
 }
-const estaEnRangoHD = (player, rect) => {
+export const estaEnRangoHD = (player, rect) => {
     return estaEnRangoH(player, rect) && player.posXf > rect.posXf
 }
 
@@ -73,7 +66,7 @@ export const colisionW = (player, rect) => {
     return colisionTop(player, rect) && estaEnRangoVI(player, rect)
 }
 export const colisionS = (player, rect) => {
-    console.log('colision en siguiente paso: ', player.posYf + step >= rect.posY, 'posXf: ', player.posXf, 'step: ', step)
+    // console.log('colision en siguiente paso: ', player.posYf + step >= rect.posY, 'posXf: ', player.posXf, 'step: ', step)
     return colisionBottom(player, rect) && estaEnRangoVS(player, rect)
 }
 export const colisionA = (player, rect) => {

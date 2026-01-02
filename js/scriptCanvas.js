@@ -69,7 +69,7 @@ const calcularDeltaTime = (timestamp) => {
 const update = (deltaTime) => {
     acc += deltaTime
     while(acc >= fixed_dt) {
-        moverPlayer(player, step, canvas1)
+        moverPlayer(canvas1)
         acc -= fixed_dt
     }
 }
