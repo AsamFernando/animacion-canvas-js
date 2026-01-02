@@ -7,12 +7,6 @@ import { moves } from "./movimientos.js"
 //actual la funcion de movimiento move
 export let keyPressed = "w" //variable para poder guardar el caracter de la key presionada en el evento y pasarla a player con [] y usar la funcion de movimiento
 
-// export const keys = {
-//     w:{key:'w', state:false, move:moves.up},
-//     s:{key:'s', state:false, move:moves.down},
-//     a:{key:'a', state:false, move:moves.left},
-//     d:{key:'d', state:false, move:moves.right},
-// }
 export const keys = {
     w:{key:'w', state:false, onColision:colisionW, move:moves.up},
     s:{key:'s', state:false, onColision:colisionS, move:moves.down},
@@ -48,9 +42,16 @@ const frenar = (e) => {
     //probar colisiones descomentando de a uno
     // if(keyPressed) console.log(keys[keyPressed].onColision(player, rects[1]))
 
+    //habiendo incorporado la forma de controlar cuanto se suma a las posiciones de player de forma
+    //en que si no esta en ningun rango de rect se suma o resta step y si lo esta se controla que
+    //se sume o reste step o si la distancia es menor a step, lo que falta, ya no se necesitaria usar 
+    //una funcion onColision ya que cuando estan en la misma posicion player y rect se suma o resta cero
+    // a la pos de player
+    // Ver si hay q controlar que no se realice la suma o resta cuando estan en la misma posicion, para eso
+    //podria usar onColision
 export const moverPlayer = (canvas) => {
     // if(keys[keyPressed].state && !keys[keyPressed].onColisionNexStep(player, rects[1])) {
-    if(keys[keyPressed].state && !keys[keyPressed].onColision(player, rects[1])) {
+    if(keys[keyPressed].state /* && !keys[keyPressed].onColision(player, rects[1]) */) {
         keys[keyPressed].move(canvas)
     }
 }

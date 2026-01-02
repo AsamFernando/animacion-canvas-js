@@ -13,17 +13,11 @@ const maxPos = (final, posicion, step) =>  {
 //los get de player o de los rectangulos se utilizan sin ejecutar con ()
 
 //Ejecutar draw solo se oprime una tecla de desplazamiento para siempre obtener el timelapse desde cero 
-// export const moves = {
-//     up(player, rects, canvas) {if(!player.inicioY) player.posY += nextStep(colisionNexStepW, player.posY, rects[1].posYf)},
-//     down(player, rects, canvas) {if(!player.finY(canvas)) player.posY += nextStep(colisionNexStepS, player.posYf, rects[1].posY)}, 
-//     left(player, rects, canvas) {if(!player.inicioX) player.posX += nextStep(colisionNexStepA, player.posX, rects[1].posXf)},
-//     right(player, rects, canvas) {if(!player.finX(canvas)) player.posX += nextStep(colisionNexStepD, player.posXf, rects[1].posX)}, 
-// }
 export const moves = {
     up(canvas) {if(!player.inicioY) player.posY = minPos(0, player.posY, !estaEnRangoVI(player, rects[1]) ? step : nextStep(player.posY, rects[1].posYf))},
-    down(canvas) {if(!player.finY(canvas)) player.posY = maxPos(canvas.height - player.posYf, player.posY, !estaEnRangoVS(player, rects[1]) ? step : nextStep(player.posYf, rects[1].posY))}, 
+    down(canvas) {if(!player.finY(canvas)) player.posY = maxPos(canvas.height - player.alto, player.posY, !estaEnRangoVS(player, rects[1]) ? step : nextStep(player.posYf, rects[1].posY))}, 
     left(canvas) {if(!player.inicioX) player.posX = minPos(0, player.posX, !estaEnRangoHD(player, rects[1]) ? step : nextStep(player.posX, rects[1].posXf))},
-    right(canvas) {if(!player.finX(canvas)) player.posX = maxPos(canvas.width - player.posXf, player.posX, !estaEnRangoHI(player, rects[1]) ? step : nextStep(player.posXf, rects[1].posX))},
+    right(canvas) {if(!player.finX(canvas)) player.posX = maxPos(canvas.width - player.ancho, player.posX, !estaEnRangoHI(player, rects[1]) ? step : nextStep(player.posXf, rects[1].posX))},
 }
 
 //COMENTARIOS

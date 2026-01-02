@@ -17,7 +17,9 @@
 - [ ] juntar comentarios generales del codigo o comportamiento de js y dom/navegador/node etc y separar de los que son explicando el codigo
 
 ### Correcciones
-- [ ] corregir colisiones en base a desplazamiento en funcion del tiempo ~~con Math.min y max, ver si se puede hacer con fixed timestep e interpolacion~~ controlando si en el proximo step hay colision, si no hay sumo step a la posicion, de lo contrario sumo lo que falta para que el lado q se va a colisionar de player quede en la misma posicion del lado del rect, y tambien podria regularse para que quede a un pixel o a cierta distancia ya q en la realidad dos cosas no pueden estar en la misma posicion, solo por encima, debajo o a los lados, luego para consultar por alguna caracteristica q involucre a player y el objeto a colisionar se tendria q tener en cuenta ese rango de colision y no solo q esten en la misma posicion.
+
+- [ ] Ver si hay q controlar que no se realice la suma o resta cuando estan en la misma posicion, para eso podria usar onColision
+- [ ] refactorizar control de colisiones para cualquier fixed_dt donde se usa si player esta en rango dos veces, en colisiones y en movimientos
 - [ ] ver como mergear mejor las ramas con comentario con las no comentadas como dev-comentado con dev para luego pasar a main q no tiene comentarios
 - [ ] refactorizar todas las asignaciones y variables en cambiarPosicion.js
 - [ ] refactorizar las funciones y eventos y usar objetos donde se necesite
@@ -26,6 +28,7 @@
 - [ ] por el momento los rectangulos son multiplos de 5 para acertar colisiones por posicion de x e y
 
 ### Completados
+- [x] (cambiado por control si no esta en rango sumo step sino sumo el minimo entre step y la diferencia entre la pos de player y rect en x, y, xf o yf, q necesito, asi obtengo el numero de pixeles que necesito sumar o restar cuando la distancia antes de colision en menor a step). No implementado: corregir colisiones en base a desplazamiento en funcion del tiempo ~~con Math.min y max, ver si se puede hacer con fixed timestep e interpolacion~~ controlando si en el proximo step hay colision, si no hay sumo step a la posicion, de lo contrario sumo lo que falta para que el lado q se va a colisionar de player quede en la misma posicion del lado del rect, y tambien podria regularse para que quede a un pixel o a cierta distancia ya q en la realidad dos cosas no pueden estar en la misma posicion, solo por encima, debajo o a los lados, luego para consultar por alguna caracteristica q involucre a player y el objeto a colisionar se tendria q tener en cuenta ese rango de colision y no solo q esten en la misma posicion.
 - [x] corregir no pasarse del canvas al desplazar hasta el inicio o final con los inputs
 - [x] separadas funciones para dibujar en canvas y las q ejecutan o cancelan la animacion
 - [x] hacer que la velocidad sea constante sin depender de refresh rate del monitor, con timestamp
