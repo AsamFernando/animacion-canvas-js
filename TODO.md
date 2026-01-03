@@ -2,6 +2,8 @@
 - No hay de momento
 
 ## Proximos Cambios
+
+- [ ] implementar acelarecion en caida libre por gravedad aumentando la velocidad en 9.8 cada segundo de caida
 - [ ] ver si pasar funciones de dibujo en canvas y otras y constantes o vars a archivo constantes.js y systems.js
 - [ ] hacer q la velocidad en q se ve q player se mueve por pantalla no dependa de restar o sumar a su posicion una variable velocidad sino q siempre avance de 1 en 1 para evitar q las posiciones desde donde arranca q pueden ser cambiadas por los inputs, y las proximas q tome dejen de ser multiplos de la velocidad q se resta a la posicion, lo cual rompe las colisiones de momento
 - [ ] incorporar aceleracion al rectangulo
@@ -17,7 +19,7 @@
 - [ ] juntar comentarios generales del codigo o comportamiento de js y dom/navegador/node etc y separar de los que son explicando el codigo
 
 ### Correcciones
-
+- [ ] corregir como se muestran los inputs ahora con decimales en la pos de player
 - [ ] Ver si hay q controlar que no se realice la suma o resta cuando estan en la misma posicion, para eso podria usar onColision
 - [ ] refactorizar control de colisiones para cualquier fixed_dt donde se usa si player esta en rango dos veces, en colisiones y en movimientos
 - [ ] ver como mergear mejor las ramas con comentario con las no comentadas como dev-comentado con dev para luego pasar a main q no tiene comentarios
