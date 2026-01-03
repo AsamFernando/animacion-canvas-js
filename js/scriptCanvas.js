@@ -30,8 +30,8 @@ const dibujarRectangulos = () => {
 export const render = (frameTime) => {
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
     mostrarFPS({contexto:ctx1, frameTime, x:599, y:8, ancho:50})
-    mostrarPosRect({contexto:ctx1, rect:player, x:1, y:8, ancho:120})
-    mostrarPosRect({contexto:ctx1, rect:rects[1], x:150, y:8, ancho:120})
+    mostrarPosRect({contexto:ctx1, rect:player, x:1, y:8, ancho:150})
+    mostrarPosRect({contexto:ctx1, rect:rects[1], x:175, y:8, ancho:150})
 
     mostrarCuadricula(canvas1, ctx1)
     
