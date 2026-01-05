@@ -12,7 +12,8 @@ export class Player extends Rectangulo {
             this.posY = posicionCaida
         }
     }
-
+    //no usar el flag para detener caida por colision con objeto o fin de canvas
+    //asignar posicion de colision en vez
     detenerCaida() {
         this.gravedadOn = false
     }
