@@ -1,7 +1,7 @@
 import { animacionCorriendo, draw, render } from "../js/scriptCanvas.js"
 import { player } from "../entidades/index.js"
-import { step } from "../js/systems.js"
-
+import { step } from "../funcionalidad/index.js"
+step
 const inicioXInput = document.getElementById("inicioX")
 const inicioYInput = document.getElementById("inicioY")
 let spanInicioX = document.getElementById("posX")

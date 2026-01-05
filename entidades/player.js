@@ -1,9 +1,20 @@
 import { Rectangulo } from "./escenario.js";
 
 export class Player extends Rectangulo {
-    constructor({id, posX, posY, ancho, alto, velocidad}) {
+    constructor({id, posX, posY, ancho, alto, velocidad, gravedadOn}) {
         super({id, posX, posY, ancho, alto})
         this.velocidad = velocidad;
+        this.gravedadOn = gravedadOn;
+    }
+
+    caer(posicionCaida) {
+        if(this.gravedadOn) {
+            this.posY = posicionCaida
+        }
+    }
+
+    detenerCaida() {
+        this.gravedadOn = false
     }
 }
 

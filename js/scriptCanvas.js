@@ -1,9 +1,8 @@
 import { mostrarCuadricula, mostrarFPS, mostrarPosRect } from "../UI/index.js"
 import "../UI/cambiarPosicion.js"
-import { moverPlayer } from "../funcionalidad/index.js"
-import { player, rects } from "../entidades/index.js"
+import { aplicarGravedad, moverPlayer } from "../funcionalidad/index.js"
+import { player, rects, rectCaida} from "../entidades/index.js"
 import { fixed_dt } from "./constantes.js"
-import { step } from "./systems.js"
 
 const canvas1 = document.getElementById("canvas1")
 const ctx1 = canvas1.getContext("2d")
@@ -31,11 +30,14 @@ export const render = (frameTime) => {
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height)
     mostrarFPS({contexto:ctx1, frameTime, x:599, y:8, ancho:50})
     mostrarPosRect({contexto:ctx1, rect:player, x:1, y:8, ancho:150})
-    mostrarPosRect({contexto:ctx1, rect:rects[1], x:175, y:8, ancho:150})
+    mostrarPosRect({contexto:ctx1, rect:rectCaida, x:175, y:8, ancho:200})
+    // mostrarPosRect({contexto:ctx1, rect:rects[1], x:175, y:8, ancho:150})
 
     mostrarCuadricula(canvas1, ctx1)
     
     dibujarRectangulo(player)
+
+    dibujarRectangulo(rectCaida)
     
     dibujarRectangulos()
 }
@@ -69,11 +71,11 @@ const calcularDeltaTime = (timestamp) => {
 const update = (deltaTime) => {
     acc += deltaTime
     while(acc >= fixed_dt) {
+        aplicarGravedad(canvas1)
         moverPlayer(canvas1)
         acc -= fixed_dt
     }
 }
-
 
 //comentarios de draw() estan al final del archivo
 export const draw = (timestamp) => {
@@ -82,8 +84,9 @@ export const draw = (timestamp) => {
     let deltaTime = calcularDeltaTime(timestamp) //calculo intervalo de tiempo entre frames
     
     update(deltaTime) //separadas logica de cambios en valores de las figuras usados para dibujar en canvas
-
     render(deltaTime) //separada logica de que y como se dibuja en canvas
+
+    // console.log(caidaLibre())
     
     if(animacionCorriendo) myReq = window.requestAnimationFrame(draw)
 }

@@ -1,4 +1,21 @@
-export const playerProps = {id:'player1', posX:20, posY:20, ancho:10, alto:10, velocidad:50}
+export const playerProps = {
+    id:'player1',
+    posX:20,
+    posY:20,
+    ancho:10,
+    alto:10,
+    velocidad:50,
+    gravedadOn:false,
+}
+export const rectCaidaProps = {
+    id:'rectCaida',
+    posX:230,
+    posY:100,
+    ancho:15,
+    alto:15,
+    velocidad:0,
+    gravedadOn:true,
+}
 
 export const rectsProps = [
     {id:'rect1', posX:0, posY:250, ancho:125, alto:50},
